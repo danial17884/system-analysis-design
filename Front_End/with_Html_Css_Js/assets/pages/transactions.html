@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>تراکنش‌ها | سیستم پایش مالی</title>
+    <link rel="stylesheet" href="/assets/css/transactions.css" />
+  </head>
+  <body>
+    <!-- نوار کناری (Sidebar) -->
+    <aside class="sidebar">
+      <div class="logo">پایش<span>مالی</span></div>
+      <nav class="menu">
+        <a href="#" class="menu-item active">تراکنش‌ها</a>
+        <a href="#" class="menu-item">آمار و گزارش‌ها</a>
+        <a href="#" class="menu-item">تنظیمات</a>
+        <a href="#" class="menu-item">درباره ما</a>
+      </nav>
+      <a href="login.html" class="logout">خروج از حساب</a>
+    </aside>
+
+    <!-- محتوای اصلی -->
+    <main class="main-content">
+      <header class="top-header">
+        <h2>مدیریت تراکنش‌ها</h2>
+        <div class="user-profile">
+          <span>کاربر تستی</span>
+          <div class="avatar"></div>
+        </div>
+      </header>
+
+      <section class="content-area">
+        <div class="action-bar">
+          <input
+            type="text"
+            placeholder="جستجو در تراکنش‌ها..."
+            class="search-box"
+          />
+          <button class="btn-primary">+ ثبت تراکنش جدید</button>
+        </div>
+
+        <div class="card">
+          <table class="transactions-table">
+            <thead>
+              <tr>
+                <th>عنوان</th>
+                <th>دسته‌بندی</th>
+                <th>تاریخ</th>
+                <th>مبلغ (تومان)</th>
+                <th>وضعیت</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>خرید از سوپرمارکت</td>
+                <td>خوراک</td>
+                <td>۱۴۰۵/۰۳/۰۵</td>
+                <td class="expense">- ۴۵۰,۰۰۰</td>
+                <td><span class="badge success">موفق</span></td>
+              </tr>
+              <tr>
+                <td>حقوق ماهانه</td>
+                <td>درآمد</td>
+                <td>۱۴۰۵/۰۳/۰۱</td>
+                <td class="income">+ ۱۵,۰۰۰,۰۰۰</td>
+                <td><span class="badge success">موفق</span></td>
+              </tr>
+              <tr>
+                <td>پرداخت قبض برق</td>
+                <td>قبوض</td>
+                <td>۱۴۰۵/۰۲/۲۸</td>
+                <td class="expense">- ۱۲۰,۰۰۰</td>
+                <td><span class="badge pending">در انتظار</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+    <script src="/assets/js/transactions.js"></script>
+    <script src="/assets/js/app.js"></script>
+  </body>
+</html>

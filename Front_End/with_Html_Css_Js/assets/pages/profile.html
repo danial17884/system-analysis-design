@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>پروفایل و امنیت - سیستم پایش مالی</title>
+    <!-- اضافه کردن فونت وزیرمتن -->
+    <link
+      href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.0.0/Vazirmatn-font-face.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- اضافه کردن آیکون‌ها (FontAwesome) -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/assets/css/profile.css" />
+  </head>
+  <body>
+    <!-- نوار کناری (Sidebar) -->
+    <aside class="sidebar">
+      <div>
+        <div class="logo">پایش مالی</div>
+        <nav class="menu">
+          <ul>
+            <li>
+              <a href="#"><i class="fa fa-home"></i> داشبورد</a>
+            </li>
+            <li>
+              <a href="transactions.html"
+                ><i class="fa fa-list"></i> تراکنش‌ها</a
+              >
+            </li>
+            <li>
+              <a href="statistics.html"
+                ><i class="fa fa-chart-pie"></i> آمار و گزارش‌ها</a
+              >
+            </li>
+            <li>
+              <a href="#" class="active"><i class="fa fa-user"></i> پروفایل</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <button class="logout">
+        <i class="fa fa-sign-out-alt"></i> خروج از حساب
+      </button>
+    </aside>
+
+    <!-- محتوای اصلی -->
+    <main class="main-content">
+      <header class="top-header">
+        <h1>پروفایل و امنیت</h1>
+      </header>
+
+      <section class="content-area">
+        <div class="profile-grid">
+          <!-- کارت اطلاعات کاربری -->
+          <div class="card">
+            <h2>اطلاعات کاربری</h2>
+            <form>
+              <div class="form-group">
+                <label for="fullname">نام و نام خانوادگی</label>
+                <input type="text" id="fullname" value="کاربر نمونه" disabled />
+              </div>
+              <div class="form-group">
+                <label for="email">ایمیل</label>
+                <input
+                  type="email"
+                  id="email"
+                  value="user@example.com"
+                  disabled
+                />
+              </div>
+              <div class="form-group">
+                <label for="join-date">تاریخ عضویت</label>
+                <input type="text" id="join-date" value="۱۴۰۳/۰۲/۱۵" disabled />
+              </div>
+              <button type="submit" class="btn primary-btn" disabled>
+                ذخیره تغییرات
+              </button>
+            </form>
+          </div>
+
+          <!-- کارت تغییر رمز عبور -->
+          <div class="card">
+            <h2>تغییر رمز عبور</h2>
+            <form>
+              <div class="form-group">
+                <label for="current-password">رمز عبور فعلی</label>
+                <input
+                  type="password"
+                  id="current-password"
+                  placeholder="رمز عبور فعلی خود را وارد کنید"
+                />
+              </div>
+              <div class="form-group">
+                <label for="new-password">رمز عبور جدید</label>
+                <input
+                  type="password"
+                  id="new-password"
+                  placeholder="حداقل ۸ کاراکتر"
+                />
+              </div>
+              <div class="form-group">
+                <label for="confirm-password">تکرار رمز عبور جدید</label>
+                <input
+                  type="password"
+                  id="confirm-password"
+                  placeholder="رمز عبور جدید را تکرار کنید"
+                />
+              </div>
+              <button type="submit" class="btn primary-btn">
+                تغییر رمز عبور
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script src="/assets/js/profile.js"></script>
+    <script src="/assets/js/app.js"></script>
+  </body>
+</html>

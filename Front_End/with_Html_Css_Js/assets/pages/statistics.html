@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>آمار و گزارش‌ها - سیستم پایش مالی</title>
+    <!-- اضافه کردن فونت وزیرمتن -->
+    <link
+      href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.0.0/Vazirmatn-font-face.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- اضافه کردن آیکون‌ها (FontAwesome) -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/assets/css/statistics.css" />
+  </head>
+  <body>
+    <!-- نوار کناری (Sidebar) -->
+    <aside class="sidebar">
+      <div>
+        <div class="logo">پایش مالی</div>
+        <nav class="menu">
+          <ul>
+            <li>
+              <a href="#"><i class="fa fa-home"></i> داشبورد</a>
+            </li>
+            <li>
+              <a href="transactions.html"
+                ><i class="fa fa-list"></i> تراکنش‌ها</a
+              >
+            </li>
+            <li>
+              <a href="#" class="active"
+                ><i class="fa fa-chart-pie"></i> آمار و گزارش‌ها</a
+              >
+            </li>
+            <li>
+              <a href="#"><i class="fa fa-user"></i> پروفایل</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <button class="logout">
+        <i class="fa fa-sign-out-alt"></i> خروج از حساب
+      </button>
+    </aside>
+
+    <!-- محتوای اصلی -->
+    <main class="main-content">
+      <header class="top-header">
+        <h1>آمار و گزارش‌ها</h1>
+      </header>
+
+      <section class="content-area">
+        <!-- کارت‌های خلاصه وضعیت -->
+        <div class="summary-cards">
+          <div class="stat-card income">
+            <div class="icon"><i class="fa fa-arrow-up"></i></div>
+            <div class="details">
+              <h3>کل درآمد این ماه</h3>
+              <p class="amount">۱۲,۵۰۰,۰۰۰ تومان</p>
+            </div>
+          </div>
+          <div class="stat-card expense">
+            <div class="icon"><i class="fa fa-arrow-down"></i></div>
+            <div class="details">
+              <h3>کل هزینه‌های این ماه</h3>
+              <p class="amount">۴,۲۰۰,۰۰۰ تومان</p>
+            </div>
+          </div>
+          <div class="stat-card balance">
+            <div class="icon"><i class="fa fa-wallet"></i></div>
+            <div class="details">
+              <h3>موجودی خالص</h3>
+              <p class="amount">۸,۳۰۰,۰۰۰ تومان</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- بخش نمودارها -->
+        <div class="charts-section">
+          <div class="card chart-container">
+            <div class="card-header">
+              <h2>نمودار هزینه و درآمد (۶ ماه گذشته)</h2>
+            </div>
+            <div class="chart-placeholder">
+              <!-- این بخش برای قرارگیری Canvas کتابخانه‌هایی مثل Chart.js است -->
+              <div class="mock-chart">
+                <div class="bar" style="height: 40%">
+                  <span class="tooltip">دی</span>
+                </div>
+                <div class="bar" style="height: 60%">
+                  <span class="tooltip">بهمن</span>
+                </div>
+                <div class="bar" style="height: 30%">
+                  <span class="tooltip">اسفند</span>
+                </div>
+                <div class="bar" style="height: 80%">
+                  <span class="tooltip">فروردین</span>
+                </div>
+                <div class="bar" style="height: 50%">
+                  <span class="tooltip">اردیبهشت</span>
+                </div>
+                <div class="bar active" style="height: 90%">
+                  <span class="tooltip">خرداد</span>
+                </div>
+              </div>
+              <p class="note">محل قرارگیری نمودار تعاملی (Chart.js)</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script src="/assets/js/statistics.js"></script>
+    <script src="/assets/js/app.js"></script>
+  </body>
+</html>

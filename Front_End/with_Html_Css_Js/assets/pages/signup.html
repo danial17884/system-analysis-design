@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ثبت‌نام | سیستم پایش مالی</title>
+    <link rel="stylesheet" href="/assets/css/signup.css" />
+  </head>
+  <body>
+    <div class="split-screen">
+      <!-- بخش فرم ثبت‌نام (سمت راست در حالت راست‌چین) -->
+      <div class="form-side">
+        <div class="form-container">
+          <div class="logo">پایش<span>مالی</span></div>
+          <h2>ساخت حساب کاربری</h2>
+          <p class="subtitle">
+            برای مدیریت هوشمند هزینه‌های خود، اطلاعات زیر را تکمیل کنید.
+          </p>
+
+          <form action="#">
+            <div class="input-group">
+              <label for="fullname">نام و نام خانوادگی</label>
+              <input
+                type="text"
+                id="fullname"
+                placeholder="مثلاً: علی احمدی"
+                required
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="email">آدرس ایمیل</label>
+              <input
+                type="email"
+                id="email"
+                placeholder="example@mail.com"
+                required
+                dir="ltr"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="password">رمز عبور</label>
+              <input
+                type="password"
+                id="password"
+                placeholder="********"
+                required
+                dir="ltr"
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="confirm-password">تکرار رمز عبور</label>
+              <input
+                type="password"
+                id="confirm-password"
+                placeholder="********"
+                required
+                dir="ltr"
+              />
+            </div>
+
+            <button type="submit" class="btn-submit">ثبت‌نام در سیستم</button>
+          </form>
+
+          <p class="login-link">
+            قبلاً ثبت‌نام کرده‌اید؟ <a href="#">وارد شوید</a>
+          </p>
+        </div>
+      </div>
+
+      <!-- بخش تصویر و شعار (سمت چپ) -->
+      <div class="image-side">
+        <div class="image-overlay">
+          <h2>به جمع ما بپیوندید!</h2>
+          <p>آینده مالی خود را از امروز پیش‌بینی و مدیریت کنید.</p>
+        </div>
+      </div>
+    </div>
+    <script src="/assets/js/signup.js"></script>
+  </body>
+</html>
