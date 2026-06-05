@@ -1,0 +1,263 @@
+/* profile.css */
+
+/* --- تنظیمات پایه (مشترک) --- */
+:root {
+  --bg-color: #121212;
+  --card-bg-color: #1e1e1e;
+  --text-color: #e0e0e0;
+  --primary-color: #ff7a00;
+  --border-color: #333;
+  --red-color: #f44336;
+  --font-family: vazir;
+}
+
+@font-face {
+  font-family: vazir;
+  src: url('/assets/font/persianFont/vazir-font-v18.0.0/Vazir-Light.woff');
+  src: url('/assets/font/persianFont/vazir-font-v18.0.0/Vazir-Light.woff2');
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  display: flex;
+  direction: rtl;
+  min-height: 100vh;
+}
+
+/* --- استایل‌های مشترک پنل (سایدبار و هدر) --- */
+.sidebar {
+  width: 260px;
+  background-color: var(--card-bg-color);
+  padding: 20px;
+  border-left: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: width 0.3s;
+}
+
+.sidebar .logo {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--primary-color);
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.menu ul {
+  list-style: none;
+}
+.menu ul li {
+  margin-bottom: 15px;
+}
+
+.menu ul li a {
+  color: var(--text-color);
+  text-decoration: none;
+  font-size: 1rem;
+  padding: 12px 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 8px;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+}
+
+.menu ul li a i {
+  width: 20px;
+  text-align: center;
+}
+.menu ul li a:hover {
+  background-color: rgba(255, 122, 0, 0.1);
+}
+.menu ul li a.active {
+  background-color: var(--primary-color);
+  color: #fff;
+  font-weight: 600;
+}
+
+.logout {
+  background-color: transparent;
+  border: 1px solid var(--red-color);
+  color: var(--red-color);
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 1rem;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.logout:hover {
+  background-color: var(--red-color);
+  color: #fff;
+}
+
+.main-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.top-header {
+  padding: 15px 30px;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--card-bg-color);
+}
+
+.top-header h1 {
+  font-size: 22px;
+  font-weight: 600;
+}
+.content-area {
+  padding: 30px;
+  flex-grow: 1;
+}
+
+/* --- استایل‌های اختصاصی صفحه پروفایل --- */
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 30px;
+}
+
+.card {
+  background-color: var(--card-bg-color);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.card h2 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.9rem;
+  color: #bbb;
+  margin-bottom: 8px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 15px;
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-color);
+  font-family: inherit;
+  font-size: 1rem;
+  transition:
+    border-color 0.3s,
+    box-shadow 0.3s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.3);
+}
+
+.form-group input::placeholder {
+  color: #666;
+}
+
+.form-group input:disabled {
+  background-color: #2a2a2a;
+  cursor: not-allowed;
+  color: #888;
+}
+
+.btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.3s,
+    opacity 0.3s;
+  margin-top: 10px;
+}
+
+.primary-btn {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+.primary-btn:hover {
+  background-color: #e66e00;
+}
+
+.btn:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* --- واکنش‌گرایی --- */
+@media (max-width: 768px) {
+  body {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-left: none;
+    border-bottom: 1px solid var(--border-color);
+    padding: 15px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: auto;
+  }
+
+  .sidebar .logo {
+    margin-bottom: 0;
+    font-size: 20px;
+  }
+  .menu {
+    display: none;
+  } /* منوی همبرگری نیاز دارد */
+  .logout {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    width: auto;
+  }
+
+  .content-area {
+    padding: 20px;
+  }
+  .card {
+    padding: 20px;
+  }
+}
