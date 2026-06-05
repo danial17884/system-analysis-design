@@ -1,0 +1,176 @@
+@font-face {
+  font-family: vazir;
+  src: url('/assets/font/persianFont/vazir-font-v18.0.0/Vazir-Light.woff');
+  src: url('/assets/font/persianFont/vazir-font-v18.0.0/Vazir-Light.woff2');
+}
+/* تنظیمات پایه */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: vazir;
+}
+body {
+  background-color: #121212; /* پس‌زمینه تیره */
+  color: #f1f1f1;
+  line-height: 1.6;
+}
+
+/* رنگ‌های متغیر */
+:root {
+  --primary-color: #ff6b00; /* نارنجی */
+  --surface-color: #1e1e1e; /* خاکستری تیره برای کارت‌ها */
+  --text-muted: #a0a0a0;
+}
+
+/* نوار ناوبری (مشابه صفحات قبل) */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  background-color: #1a1a1a;
+  border-bottom: 1px solid #333;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.logo span {
+  color: var(--primary-color);
+}
+
+.nav-links a {
+  color: #f1f1f1;
+  text-decoration: none;
+  margin-right: 20px;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: var(--primary-color);
+}
+
+/* بخش معرفی بالا (Hero) */
+.about-hero {
+  text-align: center;
+  padding: 80px 20px 40px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.about-hero h1 {
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+.about-hero h1 span {
+  color: var(--primary-color);
+}
+
+.about-hero p {
+  color: var(--text-muted);
+  font-size: 18px;
+  line-height: 1.8;
+}
+
+/* بخش تیم */
+.team-section {
+  padding: 40px 50px 80px;
+  text-align: center;
+}
+
+.team-section h2 {
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+.team-section h2 span {
+  color: var(--primary-color);
+}
+
+.section-subtitle {
+  color: var(--text-muted);
+  margin-bottom: 50px;
+}
+
+/* گرید 4 ستونه برای تیم */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* کارت هر عضو */
+.team-card {
+  background-color: var(--surface-color);
+  padding: 30px 20px;
+  border-radius: 12px;
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
+  border: 1px solid #333;
+}
+
+.team-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(255, 107, 0, 0.1);
+  border-color: var(--primary-color);
+}
+
+/* استایل عکس‌ها */
+.team-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 20px;
+  border: 3px solid #333;
+  transition: border-color 0.3s;
+}
+
+.team-card:hover .team-img {
+  border-color: var(--primary-color);
+}
+
+.team-card h3 {
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.team-card .role {
+  color: var(--primary-color);
+  font-size: 14px;
+}
+
+/* فوتر */
+footer {
+  text-align: center;
+  padding: 20px;
+  background-color: #1a1a1a;
+  border-top: 1px solid #333;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* واکنش‌گرایی (ریسپانسیو) برای موبایل و تبلت */
+@media (max-width: 992px) {
+  .team-grid {
+    grid-template-columns: repeat(2, 1fr); /* در تبلت 2 ستونه می‌شود */
+  }
+}
+
+@media (max-width: 600px) {
+  .team-grid {
+    grid-template-columns: 1fr; /* در موبایل 1 ستونه می‌شود */
+  }
+  .navbar {
+    flex-direction: column;
+    gap: 15px;
+  }
+}
