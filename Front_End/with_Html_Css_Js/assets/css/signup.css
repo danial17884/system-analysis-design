@@ -1,0 +1,178 @@
+/* تنظیمات پایه */
+:root {
+  --bg-dark: #121212;
+  --bg-card: #1e1e1e;
+  --primary-orange: #ff7a00;
+  --primary-orange-hover: #e06c00;
+  --text-white: #ffffff;
+  --text-gray: #b3b3b3;
+  --border-color: #333333;
+}
+@font-face {
+  font-family: vazir;
+  src: url('/assets/font/persianFont/vazir-font-v18.0.0/Vazir-Light.woff');
+  src: url('/assets/font/persianFont/vazir-font-v18.0.0/Vazir-Light.woff2');
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: vazir;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-white);
+}
+
+/* ساختار دو تکه */
+.split-screen {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* --- استایل‌های بخش فرم --- */
+.form-side {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  background-color: var(--bg-dark);
+}
+
+.form-container {
+  width: 100%;
+  max-width: 420px;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.logo span {
+  color: var(--primary-orange);
+}
+
+.form-container h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  color: var(--text-gray);
+  margin-bottom: 30px;
+  font-size: 0.9rem;
+}
+
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  color: var(--text-gray);
+}
+
+.input-group input {
+  width: 100%;
+  padding: 14px 15px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-white);
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: var(--primary-orange);
+}
+
+/* دکمه ثبت‌نام */
+.btn-submit {
+  width: 100%;
+  padding: 14px;
+  background-color: var(--primary-orange);
+  color: var(--text-white);
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin-top: 10px;
+}
+
+.btn-submit:hover {
+  background-color: var(--primary-orange-hover);
+}
+
+/* لینک ورود */
+.login-link {
+  text-align: center;
+  margin-top: 25px;
+  color: var(--text-gray);
+  font-size: 0.95rem;
+}
+
+.login-link a {
+  color: var(--primary-orange);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.login-link a:hover {
+  text-decoration: underline;
+}
+
+/* --- استایل‌های بخش تصویر --- */
+.image-side {
+  flex: 1;
+  /* ایجاد یک گرادیانت تیره روی پس‌زمینه برای خوانایی متن */
+  background:
+    linear-gradient(135deg, rgba(255, 122, 0, 0.15), rgba(18, 18, 18, 0.9)),
+    #1e1e1e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  border-right: 1px solid var(--border-color);
+}
+
+.image-overlay {
+  text-align: center;
+  padding: 40px;
+  background: rgba(18, 18, 18, 0.6);
+  border-radius: 15px;
+  border: 1px solid rgba(255, 122, 0, 0.3);
+  backdrop-filter: blur(10px);
+  max-width: 80%;
+}
+
+.image-overlay h2 {
+  color: var(--primary-orange);
+  margin-bottom: 15px;
+  font-size: 2.2rem;
+}
+
+.image-overlay p {
+  color: var(--text-gray);
+  font-size: 1.1rem;
+}
+
+/* واکنش‌گرایی برای موبایل (قرار گرفتن فرم زیر تصویر یا حذف تصویر) */
+@media (max-width: 768px) {
+  .split-screen {
+    flex-direction: column; /* در موبایل روی هم قرار می‌گیرند */
+  }
+  .image-side {
+    display: none; /* برای تمرکز کاربر روی فرم در موبایل، عکس را مخفی می‌کنیم */
+  }
+}
