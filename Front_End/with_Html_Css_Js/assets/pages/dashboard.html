@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>داشبورد اصلی | سیستم پایش مالی</title>
+    <!-- Vazirmatn Font -->
+    <link
+      href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.0.0/Vazirmatn-font-face.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- FontAwesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/assets/css/dashboard.css" />
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-logo">
+          <h2>پایش<span class="text-orange">مالی</span></h2>
+        </div>
+        <ul class="sidebar-menu">
+          <li>
+            <a href="#" class="active"><i class="fas fa-home"></i> داشبورد</a>
+          </li>
+          <li>
+            <a href="#"><i class="fas fa-list"></i> تراکنش‌ها</a>
+          </li>
+          <li>
+            <a href="#"><i class="fas fa-chart-pie"></i> آمار و گزارش‌ها</a>
+          </li>
+          <li>
+            <a href="#"><i class="fas fa-user-cog"></i> پروفایل و امنیت</a>
+          </li>
+          <li>
+            <a href="#" class="logout"
+              ><i class="fas fa-sign-out-alt"></i> خروج</a
+            >
+          </li>
+        </ul>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Header -->
+        <header class="top-header">
+          <div class="greeting">
+            <h2>خوش آمدید، کاربر عزیز 👋</h2>
+            <p>گزارش سریع وضعیت مالی شما در این ماه</p>
+          </div>
+          <div class="header-actions">
+            <button class="btn-orange">
+              <i class="fas fa-plus"></i> ثبت تراکنش جدید
+            </button>
+          </div>
+        </header>
+
+        <!-- Summary Cards -->
+        <section class="summary-cards">
+          <div class="card">
+            <div class="card-icon"><i class="fas fa-wallet"></i></div>
+            <div class="card-info">
+              <h3>موجودی کل</h3>
+              <p class="amount">۱۲,۵۰۰,۰۰۰ <span>تومان</span></p>
+            </div>
+          </div>
+          <div class="card border-green">
+            <div class="card-icon text-green">
+              <i class="fas fa-arrow-down"></i>
+            </div>
+            <div class="card-info">
+              <h3>درآمد این ماه</h3>
+              <p class="amount text-green">۱۵,۰۰۰,۰۰۰ <span>تومان</span></p>
+            </div>
+          </div>
+          <div class="card border-red">
+            <div class="card-icon text-red">
+              <i class="fas fa-arrow-up"></i>
+            </div>
+            <div class="card-info">
+              <h3>هزینه این ماه</h3>
+              <p class="amount text-red">۲,۵۰۰,۰۰۰ <span>تومان</span></p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Quick Overview & Recent Transactions -->
+        <section class="dashboard-grid">
+          <!-- Chart Placeholder -->
+          <div class="dashboard-box chart-box">
+            <div class="box-header">
+              <h3><i class="fas fa-chart-line"></i> نمودار جریان مالی</h3>
+              <a href="#">مشاهده کامل</a>
+            </div>
+            <div class="chart-placeholder">
+              <p>[محل قرارگیری نمودار Chart.js]</p>
+              <i
+                class="fas fa-chart-bar"
+                style="font-size: 4rem; color: #333; margin-top: 1rem"
+              ></i>
+            </div>
+          </div>
+
+          <!-- Recent Transactions -->
+          <div class="dashboard-box recent-tx-box">
+            <div class="box-header">
+              <h3><i class="fas fa-history"></i> آخرین تراکنش‌ها</h3>
+              <a href="#">همه تراکنش‌ها</a>
+            </div>
+            <ul class="recent-list">
+              <li class="tx-item">
+                <div class="tx-info">
+                  <div class="tx-icon bg-red">
+                    <i class="fas fa-shopping-cart"></i>
+                  </div>
+                  <div>
+                    <h4>خرید سوپرمارکت</h4>
+                    <small>۱۴۰۲/۰۸/۱۵</small>
+                  </div>
+                </div>
+                <div class="tx-amount text-red">- ۴۵۰,۰۰۰ تومان</div>
+              </li>
+              <li class="tx-item">
+                <div class="tx-info">
+                  <div class="tx-icon bg-green">
+                    <i class="fas fa-briefcase"></i>
+                  </div>
+                  <div>
+                    <h4>حقوق آبان</h4>
+                    <small>۱۴۰۲/۰۸/۰۱</small>
+                  </div>
+                </div>
+                <div class="tx-amount text-green">+ ۱۵,۰۰۰,۰۰۰ تومان</div>
+              </li>
+              <li class="tx-item">
+                <div class="tx-info">
+                  <div class="tx-icon bg-red"><i class="fas fa-car"></i></div>
+                  <div>
+                    <h4>بنزین</h4>
+                    <small>۱۴۰۲/۰۷/۲۸</small>
+                  </div>
+                </div>
+                <div class="tx-amount text-red">- ۱۵۰,۰۰۰ تومان</div>
+              </li>
+            </ul>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="/assets/js/dashboard.js"></script>
+    <script src="/assets/js/app.js"></script>
+  </body>
+</html>
