@@ -1,0 +1,775 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>تراکنش‌ها | آوند سنتر</title>
+
+    <!-- فونت وزیر -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.0.0/Vazirmatn-font-face.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <style>
+        :root {
+            --bg-color: #121212;
+            --surface: #1e1e1e;
+            --card-bg: rgba(255, 255, 255, 0.04);
+            --text: #ffffff;
+            --text-muted: #aaaaaa;
+            --border: #333;
+            --primary: #ff7a00;
+            --primary-hover: #e06c00;
+            --red: #f44336;
+            --green: #4caf50;
+            --blue: #2196f3;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --sidebar-bg: rgba(30, 30, 30, 0.8);
+            --transition: 0.6s ease;
+            --radius: 16px;
+            --income-color: #4caf50;
+            --expense-color: #f44336;
+        }
+
+        body.light-mode {
+            --bg-color: #f5f5f7;
+            --surface: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.6);
+            --text: #1d1d1f;
+            --text-muted: #6e6e73;
+            --border: #e0e0e0;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            --sidebar-bg: rgba(255, 255, 255, 0.6);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Vazirmatn', 'Vazir', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text);
+            display: flex;
+            min-height: 100vh;
+            transition: background var(--transition), color var(--transition);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* دکمه تغییر تم - بالا سمت چپ */
+        .theme-toggle {
+            position: fixed;
+            top: 1.5rem;
+            left: 1.5rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1100;
+            transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
+        }
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+        }
+
+        /* لوگو ثابت - بالا سمت راست */
+        .logo-fixed {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--primary);
+            text-decoration: none;
+            z-index: 1100;
+            letter-spacing: -0.5px;
+        }
+
+        /* سایدبار */
+        .sidebar {
+            width: 280px;
+            background: var(--sidebar-bg);
+            backdrop-filter: blur(12px);
+            border-left: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 90px 15px 30px;
+            transition: right 0.4s ease, background var(--transition);
+            position: relative;
+            z-index: 10;
+        }
+
+        .menu ul {
+            list-style: none;
+        }
+        .menu ul li {
+            margin-bottom: 10px;
+        }
+        .menu ul li a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        .menu ul li a:hover {
+            background: rgba(255, 122, 0, 0.15);
+            transform: translateX(-5px);
+        }
+        .menu ul li a.active {
+            background: var(--primary);
+            color: #fff;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(255, 122, 0, 0.4);
+        }
+
+        .logout {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            border: 1px solid var(--red);
+            color: var(--red);
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .logout:hover {
+            background: var(--red);
+            color: #fff;
+        }
+
+        /* محتوای اصلی */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .top-header {
+            margin-top: 2.5rem;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .top-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--text), var(--text-muted));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            padding-right: 160px; /* فاصله از لوگو */
+        }
+
+        /* ================== تغییرات خواسته‌شده ================== */
+        .action-bar {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-right: auto;   /* در راست‌چین: فضا از راست می‌گیرد */
+            margin-left: auto;    /* در راست‌چین: فضا از چپ می‌گیرد */
+        }
+        /* در موبایل دیگه مرکز‌چین نمی‌کنیم تا دکمه‌ها کشیده نشوند */
+        @media (max-width: 900px) {
+            .action-bar {
+                margin: 0;
+            }
+        }
+        /* ========================================================= */
+
+        .search-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 12px 20px;
+            border-radius: 30px;
+            width: 280px;
+            backdrop-filter: blur(10px);
+            font-family: inherit;
+        }
+        .search-box:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
+            transition: background 0.3s, transform 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        /* جدول تراکنش‌ها */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow-x: auto;
+            box-shadow: var(--shadow);
+            margin-top: 20px;
+        }
+
+        .transactions-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+        }
+
+        .transactions-table th,
+        .transactions-table td {
+            padding: 16px;
+            text-align: right;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .transactions-table th {
+            color: var(--text-muted);
+            font-weight: 500;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .transactions-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .income {
+            color: var(--income-color);
+            font-weight: 700;
+        }
+        .expense {
+            color: var(--expense-color);
+            font-weight: 700;
+        }
+
+        .badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .badge.success {
+            background: rgba(76, 175, 80, 0.15);
+            color: var(--income-color);
+        }
+        .badge.pending {
+            background: rgba(255, 152, 0, 0.15);
+            color: #ff9800;
+        }
+
+        .btn-delete {
+            background: none;
+            border: none;
+            color: var(--red);
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: transform 0.3s;
+        }
+        .btn-delete:hover {
+            transform: scale(1.2);
+        }
+
+        /* مودال */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0.3s, opacity 0.3s;
+        }
+        .modal.active {
+            visibility: visible;
+            opacity: 1;
+        }
+        .modal-content {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 30px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: var(--shadow);
+        }
+        .modal-content h3 {
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: inherit;
+        }
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .btn-cancel {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .btn-save {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--primary);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            z-index: 2100;
+            font-weight: 500;
+            animation: slideIn 0.3s ease;
+            display: none;
+        }
+        @keyframes slideIn {
+            from { transform: translateY(30px); opacity: 0; }
+            to   { transform: translateY(0); opacity: 1; }
+        }
+
+        /* منوی همبرگری */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 2rem;
+            cursor: pointer;
+            position: fixed;
+            top: 1.2rem;
+            left: 1.5rem;
+            z-index: 1200;
+            width: 48px;
+            height: 48px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* حالت موبایل */
+        @media (max-width: 900px) {
+            .menu-toggle {
+                display: flex;
+            }
+            .theme-toggle {
+                left: 5rem;
+            }
+            .sidebar {
+                position: fixed;
+                right: -100%;
+                top: 0;
+                bottom: 0;
+                width: 280px;
+                z-index: 1050;
+                transition: right 0.4s ease;
+            }
+            .sidebar.open {
+                right: 0;
+            }
+            .sidebar-backdrop {
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 1040;
+                display: none;
+            }
+            .sidebar.open ~ .sidebar-backdrop {
+                display: block;
+            }
+            .main-content {
+                padding: 80px 20px 30px;
+            }
+            .top-header h1 {
+                padding-right: 80px;
+            }
+            .action-bar {
+                flex-direction: column;
+                align-items: stretch;
+                margin: 0;
+            }
+            .search-box {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- دکمه تغییر تم -->
+    <button class="theme-toggle" id="themeToggle" aria-label="تغییر تم">🌙</button>
+
+    <!-- لوگو ثابت -->
+    <a href="index.html" class="logo-fixed">آوند سنتر</a>
+
+    <!-- دکمه همبرگری موبایل -->
+    <button class="menu-toggle" id="menuToggle" aria-label="منو">☰</button>
+
+    <!-- سایدبار -->
+    <aside class="sidebar" id="sidebar">
+        <div>
+            <nav class="menu">
+                <ul>
+                    <li><a href="dashboard.html"><i class="fa fa-home"></i> داشبورد</a></li>
+                    <li><a href="transactions.html" class="active"><i class="fa fa-list"></i> تراکنش‌ها</a></li>
+                    <li><a href="statistics.html"><i class="fa fa-chart-pie"></i> آمار و گزارش‌ها</a></li>
+                    <li><a href="profile.html"><i class="fa fa-user"></i> پروفایل</a></li>
+                </ul>
+            </nav>
+        </div>
+        <button class="logout" id="logoutBtn"><i class="fa fa-sign-out-alt"></i> خروج از حساب</button>
+    </aside>
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <!-- محتوای اصلی -->
+    <main class="main-content">
+        <header class="top-header">
+            <h1>مدیریت تراکنش‌ها</h1>
+            <div class="action-bar">
+                <input type="text" id="searchInput" placeholder="جستجو در تراکنش‌ها..." class="search-box" />
+                <button class="btn-primary" id="openAddModal">
+                    <i class="fa fa-plus"></i> ثبت تراکنش جدید
+                </button>
+            </div>
+        </header>
+
+        <!-- جدول تراکنش‌ها -->
+        <div class="card">
+            <table class="transactions-table">
+                <thead>
+                    <tr>
+                        <th>عنوان</th>
+                        <th>دسته‌بندی</th>
+                        <th>تاریخ</th>
+                        <th>مبلغ (تومان)</th>
+                        <th>وضعیت</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="transactionsTableBody"></tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- مودال ثبت تراکنش -->
+    <div class="modal" id="addModal">
+        <div class="modal-content">
+            <h3>ثبت تراکنش جدید</h3>
+            <div class="form-group">
+                <label>عنوان</label>
+                <input type="text" id="trxTitle" placeholder="مثلاً خرید کتاب" />
+            </div>
+            <div class="form-group">
+                <label>مبلغ (تومان)</label>
+                <input type="number" id="trxAmount" placeholder="۰" />
+            </div>
+            <div class="form-group">
+                <label>نوع</label>
+                <select id="trxType">
+                    <option value="expense">هزینه</option>
+                    <option value="income">درآمد</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>دسته‌بندی</label>
+                <select id="trxCategory">
+                    <option value="خوراک">خوراک</option>
+                    <option value="حمل و نقل">حمل و نقل</option>
+                    <option value="قبوض">قبوض</option>
+                    <option value="درآمد">درآمد</option>
+                    <option value="سرگرمی">سرگرمی</option>
+                    <option value="سایر">سایر</option>
+                </select>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-cancel" id="cancelAdd">انصراف</button>
+                <button class="btn-save" id="saveTrx">ذخیره</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- مودال تایید حذف -->
+    <div class="modal" id="confirmModal">
+        <div class="modal-content">
+            <h3>حذف تراکنش</h3>
+            <p>آیا از حذف این تراکنش مطمئن هستید؟</p>
+            <div class="modal-buttons">
+                <button class="btn-cancel" id="cancelDelete">انصراف</button>
+                <button class="btn-save" id="confirmDelete" style="background: var(--red);">حذف</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">پیام</div>
+
+    <script>
+        // ========== اجرا بعد از لود DOM ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            // رفرنس‌ها
+            const body = document.body;
+            const themeToggle = document.getElementById('themeToggle');
+            const menuToggle = document.getElementById('menuToggle');
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('sidebarBackdrop');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const searchInput = document.getElementById('searchInput');
+            const openAddModalBtn = document.getElementById('openAddModal');
+            const addModal = document.getElementById('addModal');
+            const cancelAddBtn = document.getElementById('cancelAdd');
+            const saveTrxBtn = document.getElementById('saveTrx');
+            const confirmModal = document.getElementById('confirmModal');
+            const cancelDeleteBtn = document.getElementById('cancelDelete');
+            const confirmDeleteBtn = document.getElementById('confirmDelete');
+            const tableBody = document.getElementById('transactionsTableBody');
+
+            // داده‌های اولیه
+            let transactions = [
+                { id: 1, title: 'خرید از سوپرمارکت', category: 'خوراک', amount: 450000, type: 'expense', date: '۱۴۰۵/۰۳/۰۵', status: 'success' },
+                { id: 2, title: 'حقوق ماهانه', category: 'درآمد', amount: 15000000, type: 'income', date: '۱۴۰۵/۰۳/۰۱', status: 'success' },
+                { id: 3, title: 'پرداخت قبض برق', category: 'قبوض', amount: 120000, type: 'expense', date: '۱۴۰۵/۰۲/۲۸', status: 'pending' },
+            ];
+            let nextId = 4;
+            let deleteTargetId = null;
+
+            // ========== مدیریت تم ==========
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            function applyTheme(theme) {
+                if (theme === 'light') {
+                    body.classList.add('light-mode');
+                    themeToggle.innerHTML = '☀️';
+                } else {
+                    body.classList.remove('light-mode');
+                    themeToggle.innerHTML = '🌙';
+                }
+            }
+            applyTheme(savedTheme);
+
+            themeToggle.addEventListener('click', () => {
+                const isLight = body.classList.contains('light-mode');
+                const newTheme = isLight ? 'dark' : 'light';
+                applyTheme(newTheme);
+                localStorage.setItem('theme', newTheme);
+            });
+
+            // ========== سایدبار و منوی موبایل ==========
+            menuToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                sidebar.classList.toggle('open');
+            });
+            backdrop.addEventListener('click', () => {
+                sidebar.classList.remove('open');
+            });
+            // بستن سایدبار با کلیک روی لینک‌ها
+            sidebar.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    sidebar.classList.remove('open');
+                });
+            });
+
+            // ========== خروج از حساب ==========
+            logoutBtn.addEventListener('click', () => {
+                localStorage.removeItem('authToken');
+                sessionStorage.removeItem('authToken');
+                showToast('خروج موفقیت‌آمیز');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 1000);
+            });
+
+            // ========== Toast ==========
+            function showToast(message, isError = false) {
+                const toast = document.getElementById('toast');
+                toast.textContent = message;
+                toast.style.background = isError ? '#f44336' : 'var(--primary)';
+                toast.style.display = 'block';
+                setTimeout(() => {
+                    toast.style.display = 'none';
+                }, 3000);
+            }
+
+            // ========== رندر جدول ==========
+            function renderTable(data) {
+                tableBody.innerHTML = '';
+                data.forEach(trx => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${trx.title}</td>
+                        <td>${trx.category}</td>
+                        <td>${trx.date}</td>
+                        <td class="${trx.type === 'income' ? 'income' : 'expense'}">
+                            ${trx.type === 'income' ? '+' : '-'} ${trx.amount.toLocaleString()}
+                        </td>
+                        <td>
+                            <span class="badge ${trx.status === 'success' ? 'success' : 'pending'}">
+                                ${trx.status === 'success' ? 'موفق' : 'در انتظار'}
+                            </span>
+                        </td>
+                        <td>
+                            <button class="btn-delete" data-id="${trx.id}">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+
+                // اتصال رویداد حذف
+                document.querySelectorAll('.btn-delete').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const id = parseInt(e.currentTarget.getAttribute('data-id'));
+                        deleteTargetId = id;
+                        confirmModal.classList.add('active');
+                    });
+                });
+            }
+
+            // ========== فیلتر جستجو ==========
+            searchInput.addEventListener('input', () => {
+                const query = searchInput.value.trim();
+                if (query === '') {
+                    renderTable(transactions);
+                } else {
+                    const filtered = transactions.filter(trx =>
+                        trx.title.includes(query) || trx.category.includes(query)
+                    );
+                    renderTable(filtered);
+                }
+            });
+
+            // ========== مودال ثبت ==========
+            openAddModalBtn.addEventListener('click', () => {
+                addModal.classList.add('active');
+            });
+            cancelAddBtn.addEventListener('click', () => {
+                addModal.classList.remove('active');
+            });
+            saveTrxBtn.addEventListener('click', () => {
+                const title = document.getElementById('trxTitle').value.trim();
+                const amount = parseInt(document.getElementById('trxAmount').value);
+                const type = document.getElementById('trxType').value;
+                const category = document.getElementById('trxCategory').value;
+
+                if (!title || isNaN(amount) || amount <= 0) {
+                    showToast('لطفاً عنوان و مبلغ معتبر وارد کنید.', true);
+                    return;
+                }
+
+                const newTrx = {
+                    id: nextId++,
+                    title,
+                    category,
+                    amount,
+                    type,
+                    date: new Date().toLocaleDateString('fa-IR'),
+                    status: 'success'
+                };
+                transactions.unshift(newTrx);
+                renderTable(transactions);
+                searchInput.value = '';
+                addModal.classList.remove('active');
+                // پاکسازی فرم
+                document.getElementById('trxTitle').value = '';
+                document.getElementById('trxAmount').value = '';
+                showToast('تراکنش با موفقیت ثبت شد.');
+            });
+
+            // ========== مودال تایید حذف ==========
+            cancelDeleteBtn.addEventListener('click', () => {
+                confirmModal.classList.remove('active');
+                deleteTargetId = null;
+            });
+            confirmDeleteBtn.addEventListener('click', () => {
+                if (deleteTargetId) {
+                    transactions = transactions.filter(t => t.id !== deleteTargetId);
+                    renderTable(transactions);
+                    searchInput.value = ''; // بازگردانی به حالت بدون فیلتر
+                    showToast('تراکنش با موفقیت حذف شد.');
+                }
+                confirmModal.classList.remove('active');
+                deleteTargetId = null;
+            });
+
+            // بستن مودال‌ها با کلیک بیرون
+            window.addEventListener('click', (e) => {
+                if (e.target === addModal) addModal.classList.remove('active');
+                if (e.target === confirmModal) confirmModal.classList.remove('active');
+            });
+
+            // رندر اولیه
+            renderTable(transactions);
+        });
+    </script>
+</body>
+</html>
