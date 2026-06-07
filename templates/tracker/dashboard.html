@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head><title>داشبورد مالی</title></head>
+<body>
+    <h1>خوش آمدید {{ user.username }}</h1>
+    
+    <p>درآمد ماه جاری: {{ current_month_income }} تومان</p>
+    <p>هزینه ماه جاری: {{ current_month_expenses }} تومان</p>
+    <p>پیش‌بینی هزینه ماه آینده (بر اساس میانگین ۳ ماهه): {{ predicted_expense }} تومان</p>
+    
+    <a href="{% url 'add_transaction' %}">ثبت تراکنش جدید</a>
+    <a href="{% url 'home' %}">بازگشت به صفحه اصلی</a>
+    <a href="{% url 'export_csv' %}" class="btn btn-success">📥 دانلود فایل اکسل (CSV)</a>
+
+
+    <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit">خروج</button>
+    </form>
+</body>
+</html>

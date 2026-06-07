@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>داشبورد مالی - پایشمال</title>
+</head>
+<body style="font-family: Tahoma, Arial, sans-serif; padding: 20px;">
+
+    {% if user.is_authenticated %}
+        <!-- نمایش محتوای داشبورد فقط برای کاربران لاگین شده -->
+        <h1>خوش آمدید {{ user.username }}</h1>
+        
+        <!-- خلاصه مالی -->
+        <div style="background-color: #f0f0f0; padding: 10px; border-radius: 5px;">
+            <p>مجموع درآمد: <strong>{{ total_income }}</strong> تومان</p>
+            <p>مجموع هزینه: <strong>{{ total_expense }}</strong> تومان</p>
+            <p>موجودی کل (تراز): <strong>{{ balance }}</strong> تومان</p>
+        </div>
+
+        <hr>
+
+        <!-- لینک‌های دسترسی سریع -->
+        <div style="margin: 15px 0;">
+            <a href="{% url 'add_transaction' %}" style="margin-left: 10px; text-decoration: none;">➕ ثبت تراکنش جدید</a>
+            <a href="{% url 'add_budget' %}" style="margin-left: 10px; text-decoration: none;">🎯 ثبت بودجه جدید</a>
+            <a href="{% url 'transaction_list' %}" style="margin-left: 10px; text-decoration: none;">📋 لیست تراکنش‌ها</a>
+            <a href="{% url 'econ_calculator' %}" class="btn btn-info shadow-sm">🧮 ماشین حساب مهندسی</a>
+
+
+        </div>
+
+        <hr>
+
+        <!-- وضعیت بودجه‌ها -->
+        <h3>وضعیت بودجه‌های این ماه:</h3>
+        {% if budget_status %}
+            <ul>
+            {% for budget in budget_status %}
+                <li style="margin-bottom: 10px;">
+                    <strong>{{ budget.category_name }}:</strong> 
+                    سقف: {{ budget.limit_amount }} تومان | 
+                    مصرف شده: {{ budget.spent }} تومان | 
+                    
+                    {% if budget.remaining < 0 %}
+                        <span style="color: red; font-weight: bold;">تخطی از بودجه: {{ budget.remaining }} تومان ⚠️</span>
+                    {% else %}
+                        <span style="color: green;">باقی‌مانده: {{ budget.remaining }} تومان</span>
+                    {% endif %}
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>شما هیچ بودجه‌ای برای این ماه ثبت نکرده‌اید.</p>
+        {% endif %}
+
+        <hr>
+
+        <!-- دکمه خروج -->
+        <form action="{% url 'logout' %}" method="post" style="margin-top: 20px;">
+            {% csrf_token %}
+            <button type="submit" style="color: white; background-color: red; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer;">
+                خروج از حساب کاربری
+            </button>
+        </form>
+
+    {% else %}
+        <!-- نمایش پیام و دکمه‌های ورود/ثبت‌نام برای کاربران مهمان -->
+        <div style="text-align: center; margin-top: 50px;">
+            <h1>به سیستم مدیریت مالی «حسابینو» خوش آمدید</h1>
+            <p>برای مدیریت هزینه‌ها و بودجه‌بندی، لطفاً وارد حساب کاربری خود شوید.</p>
+            
+            <div style="margin-top: 30px;">
+                <a href="{% url 'login' %}" style="margin-left: 15px; padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;">ورود به حساب</a>
+                <a href="{% url 'signup' %}" style="padding: 10px 20px; background-color: #008CBA; color: white; text-decoration: none; border-radius: 5px;">ثبت‌نام در حسابینو</a>
+            </div>
+        </div>
+    {% endif %}
+
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>محاسبات اقتصاد مهندسی</title>
+</head>
+<body>
+    <h1>محاسبات اقتصاد مهندسی</h1>
+    <a href="/">بازگشت به صفحه اصلی</a>
+    <hr>
+
+    
+    <form method="POST">
+        {% csrf_token %} 
+        
+        <p>
+            <label>نوع محاسبه:</label>
+            <select name="calc_type">
+                <option value="future">محاسبه ارزش آینده (F) با داشتن ارزش فعلی (P)</option>
+                <option value="present">محاسبه ارزش فعلی (P) با داشتن ارزش آینده (F)</option>
+            </select>
+        </p>
+
+        <p>
+            <label>مبلغ (ارزش اولیه یا نهایی):</label>
+            <input type="number" step="any" name="amount" required>
+        </p>
+
+        <p>
+            <label>نرخ بهره (درصد - i):</label>
+            <input type="number" step="any" name="rate" required>
+        </p>
+
+        <p>
+            <label>تعداد دوره‌ها (n):</label>
+            <input type="number" name="periods" required>
+        </p>
+
+        <button type="submit">محاسبه</button>
+    </form>
+
+    <hr>
+    
+    
+    {% if result %}
+        <div style="background-color: #f0f0f0; padding: 15px; margin-top: 20px; border-radius: 5px;">
+            <h2>نتیجه محاسبه:</h2>
+            <p><strong>{{ result }}</strong></p>
+        </div>
+    {% endif %}
+
+</body>
+</html>

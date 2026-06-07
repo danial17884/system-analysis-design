@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>لیست تراکنش‌ها</title>
+    <style>
+        body { font-family: Tahoma, Arial, sans-serif; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+        th { background-color: #f2f2f2; }
+        th a { text-decoration: none; color: #333; }
+        th a:hover { color: #007bff; }
+        .income { color: green; }
+        .expense { color: red; }
+        
+        /* استایل‌های مربوط به بخش فیلتر */
+        .filter-section {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+        .filter-section input, .filter-section select {
+            padding: 5px;
+            margin-left: 10px;
+        }
+        .filter-section button {
+            padding: 6px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .filter-section button:hover {
+            background-color: #0056b3;
+        }
+        .clear-btn {
+            color: red;
+            text-decoration: none;
+            margin-right: 15px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h2>لیست تمام تراکنش‌های شما</h2>
+    <a href="{% url 'home' %}">بازگشت به صفحه اصلی</a> | 
+    <a href="{% url 'add_transaction' %}">ثبت تراکنش جدید</a>
+
+    <!-- بخش جستجو و فیلتر -->
+    <div class="filter-section">
+        <form method="GET" action="">
+            <label for="q">جستجو:</label>
+            <input type="text" id="q" name="q" placeholder="جستجو در عنوان..." value="{{ query }}">
+            
+            <label for="category">دسته‌بندی:</label>
+            <select id="category" name="category">
+                <option value="">همه دسته‌بندی‌ها</option>
+                {% for cat in categories %}
+                    <!-- چون دسته‌بندی متنی است، value و متن نمایشی همان cat است -->
+                    <option value="{{ cat.id }}" {% if request.GET.category == cat.id|stringformat:"s" %}selected{% endif %}>
+                        {{ cat.name }}
+                    </option>
+                {% endfor %}
+            </select>
+            
+            <!-- حفظ ترتیب فعلی هنگام فیلتر کردن -->
+            <input type="hidden" name="sort" value="{{ sort_by }}">
+            
+            <button type="submit">جستجو و فیلتر</button>
+
+            <!-- دکمه پاک کردن فیلترها -->
+            {% if query or selected_category %}
+                <a href="{% url 'transaction_list' %}" class="clear-btn">❌ پاک کردن فیلترها</a>
+            {% endif %}
+        </form>
+    </div>
+
+    <!-- جدول تراکنش‌ها -->
+    <table>
+        <thead>
+            <tr>
+                <th>عنوان</th>
+                <!-- لینک‌های مرتب‌سازی (با حفظ جستجو و فیلتر قبلی) -->
+                <th>
+                    <a href="?sort={% if sort_by == 'amount' %}-amount{% else %}amount{% endif %}&q={{ query }}&category={{ selected_category }}">مبلغ (تومان) ↕</a>
+                </th>
+                <th>دسته‌بندی</th>
+                <th>
+                    <a href="?sort={% if sort_by == 'type' %}-type{% else %}type{% endif %}&q={{ query }}&category={{ selected_category }}">نوع ↕</a>
+                </th>
+                <th>
+                    <a href="?sort={% if sort_by == '-date' %}date{% else %}-date{% endif %}&q={{ query }}&category={{ selected_category }}">تاریخ ↕</a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tx in transactions %}
+            <tr>
+                <td>{{ tx.title }}</td>
+                <td>{{ tx.amount }}</td>
+                <!-- چون دسته‌بندی متنی است، فقط tx.category را صدا می‌زنیم -->
+                <td>{{ tx.category }}</td>
+                
+                {% if tx.type == 'income' %}
+                    <td class="income">درآمد</td>
+                {% else %}
+                    <td class="expense">هزینه</td>
+                {% endif %}
+                
+                <td>{{ tx.date }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">هیچ تراکنشی یافت نشد.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
