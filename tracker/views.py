@@ -1,18 +1,20 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
-from .models import Transaction, Budget,Category
+from .models import Transaction
 from .forms import TransactionForm
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
-from .forms import BudgetForm
+#from .forms import BudgetForm
 import csv
 from django.http import HttpResponse
 from django.db.models import Q
 
+
+from django.db.models import Sum
 
 def home(request):
     if not request.user.is_authenticated:
@@ -20,36 +22,18 @@ def home(request):
 
     user_transactions = Transaction.objects.filter(user=request.user)
 
-    # محاسبه درآمد، هزینه و موجودی کل
-    total_income = user_transactions.filter(category__type='income').aggregate(Sum('amount'))['amount__sum'] or 0
-    total_expense = user_transactions.filter(category__type='expense').aggregate(Sum('amount'))['amount__sum'] or 0
+    # محاسبه درآمد، هزینه و موجودی کل با استفاده از فیلد جدید kind
+    # نکته: اگر مقادیر kind را با حروف کوچک (income/expense) ذخیره کردید، آن‌ها را در خطوط زیر تغییر دهید
+    total_income = user_transactions.filter(kind='Income').aggregate(Sum('amount'))['amount__sum'] or 0
+    total_expense = user_transactions.filter(kind='Expense').aggregate(Sum('amount'))['amount__sum'] or 0
     balance = total_income - total_expense
 
-    # ۵ تراکنش آخر
-    recent_transactions = user_transactions.order_by('-date')[:5]
+    # ۵ تراکنش آخر با استفاده از فیلد جدید date_time
+    recent_transactions = user_transactions.order_by('-date_time')[:5]
 
-    # --- کدهای مربوط به بودجه‌بندی این ماه ---
-    current_month = datetime.now().month
-    current_year = datetime.now().year
-    
-    budgets = Budget.objects.filter(user=request.user, month=current_month, year=current_year)
+    # با توجه به اینکه مدل Budget را حذف کردیم، کدهای مربوط به آن برداشته شد.
+    # برای اینکه فایل HTML ارور ندهد، یک لیست خالی به عنوان budget_status می‌فرستیم.
     budget_status = []
-    
-    for budget in budgets:
-        
-        spent = Transaction.objects.filter(
-            user=request.user,
-            category=budget.category,
-            date__month=current_month,
-            date__year=current_year
-        ).aggregate(Sum('amount'))['amount__sum'] or 0
-        
-        budget_status.append({
-            'category_name': budget.category.name,
-            'limit_amount': budget.limit_amount,
-            'spent': spent,
-            'remaining': budget.limit_amount - spent
-        })
 
     context = {
         'total_income': total_income,
@@ -62,25 +46,24 @@ def home(request):
     return render(request, 'tracker/home.html', context)
 
 
+
 @login_required
 def dashboard(request):
     user = request.user
     today = datetime.today().date()
 
-    
-   
     current_month_expenses = Transaction.objects.filter(
         user=user, 
-        category__type='expense',
-        date__year=today.year, 
-        date__month=today.month
+        kind='expense',  # تغییر از category__type به kind
+        date_time__year=today.year,  # تغییر از date به date_time
+        date_time__month=today.month
     ).aggregate(total=Sum('amount'))['total'] or 0
 
     current_month_income = Transaction.objects.filter(
         user=user,
-        category__type='income',
-        date__year=today.year,
-        date__month=today.month
+        kind='income',  # تغییر از category__type به kind
+        date_time__year=today.year,  # تغییر از date به date_time
+        date_time__month=today.month
     ).aggregate(total=Sum('amount'))['total'] or 0
     
     past_months_expenses = []
@@ -88,9 +71,9 @@ def dashboard(request):
         target_date = today - relativedelta(months=i)
         expense = Transaction.objects.filter(
             user=user, 
-            category__type='expense',
-            date__year=target_date.year, 
-            date__month=target_date.month
+            kind='expense',  # تغییر از category__type به kind
+            date_time__year=target_date.year,  # تغییر از date به date_time
+            date_time__month=target_date.month
         ).aggregate(total=Sum('amount'))['total'] or 0
         past_months_expenses.append(expense)
     
@@ -98,10 +81,11 @@ def dashboard(request):
 
     context = {
         'current_month_expenses': current_month_expenses,
-          'current_month_income': current_month_income,
+        'current_month_income': current_month_income,
         'predicted_expense': predicted_expense,
     }
     return render(request, 'tracker/dashboard.html', context)
+
 
 @login_required
 def add_transaction(request):
@@ -138,23 +122,23 @@ def transaction_list(request):
         'transactions': transactions
     }
     return render(request, 'tracker/transaction_list.html', context)
-@login_required
-def add_budget(request):
-    if request.method == 'POST':
-        form = BudgetForm(request.POST)
-        if form.is_valid():
-            
-            budget = form.save(commit=False)
+#@login_required
+#def add_budget(request):
+ #   if request.method == 'POST':
+  #      form = BudgetForm(request.POST)
+       # if form.is_valid():
+   #         
+          #  budget = form.save(commit=False)
            
-            budget.user = request.user
+          #  budget.user = request.user
            
-            budget.save()
+           # budget.save()
             
-            return redirect('dashboard')  
-    else:
-        form = BudgetForm()
+           # return redirect('dashboard')  
+   # else:
+       # form = BudgetForm()
         
-    return render(request, 'tracker/add_budget.html', {'form': form})
+   # return render(request, 'tracker/add_budget.html', {'form': form})
 @login_required
 def export_transactions_csv(request):
     response = HttpResponse(content_type='text/csv')
@@ -172,9 +156,12 @@ def export_transactions_csv(request):
     
     
     for tx in transactions:
-        writer.writerow([tx.date, tx.amount, tx.category, tx.description])
+        writer.writerow([tx.date_time, tx.amount, tx.category, tx.description])
+
 
     return response
+
+
 
 
 
@@ -183,12 +170,13 @@ def export_transactions_csv(request):
 def transaction_list(request):
     transactions = Transaction.objects.filter(user=request.user)
     
-    # گرفتن خود آبجکت‌های دسته‌بندی که این کاربر از آن‌ها استفاده کرده است
-    categories = Category.objects.filter(transaction__user=request.user).distinct()
+    # گرفتن لیست نام دسته‌بندی‌های یکتایی که کاربر استفاده کرده است
+    categories = Transaction.objects.filter(user=request.user).values_list('category', flat=True).distinct()
 
     search_query = request.GET.get('q', '') 
     category_filter = request.GET.get('category', '')
-    sort_by = request.GET.get('sort', '-date')
+    # تغییر پیش‌فرض مرتب‌سازی به date_time-
+    sort_by = request.GET.get('sort', '-date_time')
 
     # جستجو روی عنوان و توضیحات
     if search_query:
@@ -196,11 +184,12 @@ def transaction_list(request):
             Q(title__icontains=search_query) | Q(description__icontains=search_query)
         )
 
-    # اعمال فیلتر دسته‌بندی (بر اساس ID دسته‌بندی)
+    # اعمال فیلتر دسته‌بندی (اکنون بر اساس نام دسته‌بندی است نه ID)
     if category_filter:
-        transactions = transactions.filter(category__id=category_filter)
+        transactions = transactions.filter(category=category_filter)
 
-    valid_sort_fields = ['date', '-date', 'amount', '-amount'] # type را حذف کردم چون در مدل شما نیست
+    # فیلدهای مرتب‌سازی را به date_time تغییر دادیم
+    valid_sort_fields = ['date_time', '-date_time', 'amount', '-amount'] 
     if sort_by in valid_sort_fields:
         transactions = transactions.order_by(sort_by)
 
@@ -212,4 +201,5 @@ def transaction_list(request):
         'sort_by': sort_by,
     }
     return render(request, 'tracker/transaction_list.html', context)
+
 

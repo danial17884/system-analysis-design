@@ -6,12 +6,66 @@
 </head>
 <body>
     <h2>ثبت تراکنش جدید</h2>
+    
     <form method="post">
         {% csrf_token %}
+        
+        <!-- رندر شدن خودکار فرم توسط جنگو -->
         {{ form.as_p }}
+        
+        <!-- دیتالیست خالی که توسط جاوااسکریپت پر می‌شود -->
+        <datalist id="category-options"></datalist>
+        
         <button type="submit">ذخیره تراکنش</button>
     </form>
+    
     <br>
     <a href="{% url 'dashboard' %}">انصراف و بازگشت به داشبورد</a>
+
+    <!-- اسکریپت مدیریت داینامیک دسته‌بندی‌ها -->
+     <datalist id="category-options"></datalist>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const kindSelect = document.getElementById('id_kind');
+            const dataList = document.getElementById('category-options');
+            const categoryInput = document.getElementById('id_category');
+
+            // لیست دسته‌بندی‌های پیش‌فرض
+            const expenseCategories = ['غذا', 'رفت و آمد', 'قبوض', 'پوشاک', 'اقساط', 'غیره'];
+            const incomeCategories = ['سرمایه‌گذاری', 'وام', 'فروش کالا', 'حقوق', 'هدیه', 'غیره'];
+
+            function updateCategories() {
+                // پاک کردن لیست قبلی
+                dataList.innerHTML = '';
+                
+                // دریافت نوع تراکنش انتخاب شده (فرض بر این است که مقادیر expense و income هستند)
+                const selectedKind = kindSelect.value;
+                let options = [];
+
+                if (selectedKind === 'expense' || selectedKind === 'هزینه') {
+                    options = expenseCategories;
+                } else if (selectedKind === 'income' || selectedKind === 'درآمد') {
+                    options = incomeCategories;
+                }
+
+                // اضافه کردن گزینه‌های جدید به دیتالیست
+                options.forEach(function(cat) {
+                    const optionElement = document.createElement('option');
+                    optionElement.value = cat;
+                    dataList.appendChild(optionElement);
+                });
+            }
+
+            // اجرای تابع در زمان لود صفحه برای مقداردهی اولیه
+            updateCategories();
+
+            // اجرای تابع هر زمان که نوع تراکنش تغییر کند
+            kindSelect.addEventListener('change', function() {
+                updateCategories();
+                // خالی کردن فیلد دسته‌بندی هنگام تغییر نوع تراکنش
+                categoryInput.value = ''; 
+            });
+        });
+    </script>
 </body>
 </html>

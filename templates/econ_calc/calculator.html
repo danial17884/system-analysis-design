@@ -9,41 +9,66 @@
     <a href="/">بازگشت به صفحه اصلی</a>
     <hr>
 
-    
     <form method="POST">
         {% csrf_token %} 
         
         <p>
             <label>نوع محاسبه:</label>
-            <select name="calc_type">
-                <option value="future">محاسبه ارزش آینده (F) با داشتن ارزش فعلی (P)</option>
-                <option value="present">محاسبه ارزش فعلی (P) با داشتن ارزش آینده (F)</option>
+            <select name="calc_type" style="width: 100%; max-width: 400px; padding: 5px;">
+                <option value="future_from_present">1. ارزش آینده (F) با داشتن ارزش فعلی (P)</option>
+                <option value="present_from_future">2. ارزش فعلی (P) با داشتن ارزش آینده (F)</option>
+                <option value="future_from_annuity">3. ارزش آینده (F) یک سری یکنواخت (A)</option>
+                <option value="annuity_from_future">4. وجوه استهلاکی (A) با داشتن ارزش آینده (F)</option>
+                <option value="present_from_annuity">5. ارزش فعلی (P) یک سری یکنواخت (A)</option>
+                <option value="annuity_from_present">6. بازیافت سرمایه (A) با داشتن ارزش فعلی (P)</option>
+                <option value="present_from_gradient">7. ارزش فعلی (P) یک گرادیان حسابی (G)</option>
+                <option value="annuity_from_gradient">8. تبدیل گرادیان حسابی (G) به سری یکنواخت (A)</option>
+                <option value="present_from_geometric_gradient">9. ارزش فعلی (P) یک گرادیان هندسی</option>
+                <option value="effective_interest_rate">10. محاسبه نرخ بهره موثر (ieff)</option>
+                <option value="continuous_future">11. ارزش آینده (F) با ترکیب پیوسته</option>
+                <option value="continuous_present">12. ارزش فعلی (P) با ترکیب پیوسته</option>
             </select>
         </p>
 
         <p>
-            <label>مبلغ (ارزش اولیه یا نهایی):</label>
-            <input type="number" step="any" name="amount" required>
+            <label>مبلغ (مقدار P, F, A, G یا مقدار پایه A1):</label>
+            <input type="number" step="any" name="amount" value="0" required>
         </p>
 
         <p>
             <label>نرخ بهره (درصد - i):</label>
-            <input type="number" step="any" name="rate" required>
+            <input type="number" step="any" name="rate" value="0" required>
         </p>
 
         <p>
             <label>تعداد دوره‌ها (n):</label>
-            <input type="number" name="periods" required>
+            <input type="number" name="periods" value="1" required>
         </p>
 
-        <button type="submit">محاسبه</button>
+        <!-- فیلدهای مخصوص فرمول‌های خاص -->
+        <fieldset style="margin-top: 15px; max-width: 400px;">
+            <legend>پارامترهای تکمیلی (در صورت نیاز)</legend>
+            <p>
+                <label>نرخ گرادیان هندسی (درصد - g):</label>
+                <br><small><i>* فقط برای فرمول شماره 9</i></small><br>
+                <input type="number" step="any" name="g_rate" value="0">
+            </p>
+
+            <p>
+                <label>دفعات ترکیب در سال (m):</label>
+                <br><small><i>* فقط برای فرمول شماره 10 (مثلاً 12 برای ماهانه)</i></small><br>
+                <input type="number" name="m" value="1">
+            </p>
+        </fieldset>
+        <br>
+
+        <button type="submit" style="padding: 5px 20px;">محاسبه</button>
     </form>
 
     <hr>
     
-    
     {% if result %}
-        <div style="background-color: #f0f0f0; padding: 15px; margin-top: 20px; border-radius: 5px;">
+        <div style="background-color: #f0f0f0; padding: 15px; margin-top: 20px; border-radius: 5px; max-width: 400px;">
             <h2>نتیجه محاسبه:</h2>
             <p><strong>{{ result }}</strong></p>
         </div>

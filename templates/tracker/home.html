@@ -22,7 +22,7 @@
         <!-- لینک‌های دسترسی سریع -->
         <div style="margin: 15px 0;">
             <a href="{% url 'add_transaction' %}" style="margin-left: 10px; text-decoration: none;">➕ ثبت تراکنش جدید</a>
-            <a href="{% url 'add_budget' %}" style="margin-left: 10px; text-decoration: none;">🎯 ثبت بودجه جدید</a>
+           
             <a href="{% url 'transaction_list' %}" style="margin-left: 10px; text-decoration: none;">📋 لیست تراکنش‌ها</a>
             <a href="{% url 'econ_calculator' %}" class="btn btn-info shadow-sm">🧮 ماشین حساب مهندسی</a>
 
@@ -31,27 +31,7 @@
 
         <hr>
 
-        <!-- وضعیت بودجه‌ها -->
-        <h3>وضعیت بودجه‌های این ماه:</h3>
-        {% if budget_status %}
-            <ul>
-            {% for budget in budget_status %}
-                <li style="margin-bottom: 10px;">
-                    <strong>{{ budget.category_name }}:</strong> 
-                    سقف: {{ budget.limit_amount }} تومان | 
-                    مصرف شده: {{ budget.spent }} تومان | 
-                    
-                    {% if budget.remaining < 0 %}
-                        <span style="color: red; font-weight: bold;">تخطی از بودجه: {{ budget.remaining }} تومان ⚠️</span>
-                    {% else %}
-                        <span style="color: green;">باقی‌مانده: {{ budget.remaining }} تومان</span>
-                    {% endif %}
-                </li>
-            {% endfor %}
-            </ul>
-        {% else %}
-            <p>شما هیچ بودجه‌ای برای این ماه ثبت نکرده‌اید.</p>
-        {% endif %}
+       
 
         <hr>
 
