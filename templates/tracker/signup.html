@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ثبت‌نام | آوند سنتر</title>
+
+    <!-- فونت وزیر -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.0.0/Vazirmatn-font-face.css" rel="stylesheet" />
+    <!-- Font Awesome برای آیکون‌ها -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <style>
+        :root {
+            --bg-dark: #121212;
+            --card-bg: #1e1e1e;
+            --text: #ffffff;
+            --text-muted: #b3b3b3;
+            --primary: #ff7a00;
+            --primary-hover: #e06c00;
+            --border: #333333;
+            --shadow: 0 8px 32px rgba(0,0,0,0.4);
+            --transition: 0.6s ease;
+            --radius: 12px;
+            
+            /* متغیرهای اختصاصی برای سمت چپ (تصویر) */
+            --image-gradient-end: rgba(18,18,18,0.9);
+            --image-bg-solid: #1e1e1e;
+            --overlay-bg: rgba(18,18,18,0.6);
+        }
+
+        body.light-mode {
+            --bg-dark: #f5f5f7;
+            --card-bg: #ffffff;
+            --text: #1d1d1f;
+            --text-muted: #6e6e73;
+            --border: #e0e0e0;
+            --shadow: 0 8px 32px rgba(0,0,0,0.08);
+            
+            /* تغییر رنگ‌های سمت چپ در حالت روشن */
+            --image-gradient-end: rgba(245,245,247,0.85);
+            --image-bg-solid: #ffffff;
+            --overlay-bg: rgba(255,255,255,0.7);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Vazirmatn', 'Vazir', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+            transition: background var(--transition), color var(--transition);
+        }
+
+        /* دکمه تغییر تم - وسط بالای صفحه */
+        .theme-toggle {
+            position: fixed;
+            top: 1.5rem;
+            left: 10%;
+            padding-bottom: 7px;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+        .theme-toggle:hover {
+            transform: translateX(-50%) scale(1.1);
+        }
+
+        .split-screen {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* بخش فرم (سمت راست) */
+        .form-side {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            background-color: var(--bg-dark);
+            transition: background var(--transition);
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .logo span {
+            color: var(--primary);
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+        }
+        .subtitle {
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        .password-wrapper {
+            position: relative;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 14px 15px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--text);
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.3s, box-shadow 0.3s, background-color var(--transition);
+        }
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255,122,0,0.2);
+        }
+        .input-group input::placeholder {
+            color: #666;
+        }
+        /* فیلدهای ایمیل و رمز ممکن است LTR باشند */
+        input[dir="ltr"] {
+            direction: ltr;
+            text-align: right; 
+        }
+
+        /* دکمه نمایش رمز */
+        .toggle-pwd {
+            position: absolute;
+            left: 12px;
+            top: 0;
+            height: 100%;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.3s;
+        }
+        .toggle-pwd:hover {
+            color: var(--primary);
+        }
+        .password-wrapper input {
+            padding-left: 45px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            margin-top: 10px;
+            font-family: inherit;
+        }
+        .btn-submit:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 25px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+        .login-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* بخش شعار و تصویر (سمت چپ) */
+        .image-side {
+            flex: 1;
+            /* تغییر یافت تا با متغیرها همگام شود */
+            background: linear-gradient(135deg, rgba(255,122,0,0.15), var(--image-gradient-end)), var(--image-bg-solid);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            border-right: 1px solid var(--border);
+            transition: background var(--transition);
+        }
+        .image-overlay {
+            text-align: center;
+            padding: 40px;
+            /* تغییر یافت تا با متغیرها همگام شود */
+            background: var(--overlay-bg);
+            border-radius: 15px;
+            border: 1px solid rgba(255,122,0,0.3);
+            backdrop-filter: blur(10px);
+            max-width: 80%;
+            transition: background var(--transition);
+        }
+        .image-overlay h2 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 2.2rem;
+        }
+        .image-overlay p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--primary);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            z-index: 2000;
+            font-weight: 500;
+            animation: slideIn 0.3s ease;
+            display: none;
+        }
+        @keyframes slideIn {
+            from { transform: translateY(30px); opacity: 0; }
+            to   { transform: translateY(0); opacity: 1; }
+        }
+
+        /* واکنش‌گرایی موبایل */
+        @media (max-width: 768px) {
+            .split-screen {
+                flex-direction: column;
+            }
+            .image-side {
+                display: none;
+            }
+            .form-side {
+                padding: 80px 20px 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- دکمه تغییر تم -->
+    <button class="theme-toggle" id="themeToggle" aria-label="تغییر تم">🌙</button>
+
+    <div class="split-screen">
+        <!-- بخش فرم ثبت‌نام -->
+        <div class="form-side">
+            <div class="form-container">
+                <div class="logo">آوند <span>سنتر</span></div>
+                <h2>ساخت حساب کاربری</h2>
+                <p class="subtitle">
+                    برای مدیریت هوشمند هزینه‌های خود، اطلاعات زیر را تکمیل کنید.
+                </p>
+
+                <!-- اضافه شدن method POST -->
+                <form id="signupForm" method="POST" action="">
+                    {% csrf_token %}
+                     
+                   {% if error %}
+<div style="background: #f44336; color: #fff; padding: 12px; border-radius: 8px; margin-bottom: 20px; text-align: center; font-size: 0.95rem;">
+    {{ error }}
+</div>
+{% endif %}
+
+                    <div class="input-group">
+                        <label for="fullname">نام و نام خانوادگی</label>
+                        <!-- اضافه شدن name="fullname" -->
+                        <input
+                            type="text"
+                            id="fullname"
+                            name="fullname"
+                            required
+                        />
+                    </div>
+
+                    <div class="input-group">
+                        <label for="email">آدرس ایمیل</label>
+                        <!-- اضافه شدن name="email" -->
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="example@mail.com"
+                            required
+                            dir="ltr"
+                        />
+                    </div>
+
+                    <div class="input-group">
+                        <label for="password">رمز عبور</label>
+                        <div class="password-wrapper">
+                            <!-- اضافه شدن name="password" -->
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="********"
+                                required
+                                dir="ltr"
+                            />
+                            <button type="button" class="toggle-pwd" aria-label="نمایش رمز">👁️</button>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="confirm-password">تکرار رمز عبور</label>
+                        <div class="password-wrapper">
+                            <!-- اضافه شدن name="confirm_password" -->
+                            <input
+                                type="password"
+                                id="confirm-password"
+                                name="confirm_password"
+                                placeholder="********"
+                                required
+                                dir="ltr"
+                            />
+                            <button type="button" class="toggle-pwd" aria-label="نمایش رمز">👁️</button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-submit" id="submitBtn">
+                        ثبت‌نام در آوند سنتر
+                    </button>
+                </form>
+
+                <p class="login-link">
+                    قبلاً ثبت‌نام کرده‌اید؟ <a href="{% url 'login' %}">وارد شوید</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- بخش شعار و تصویر -->
+        <div class="image-side">
+            <div class="image-overlay">
+                <h2>آینده مالی خود را امروز بسازید</h2>
+                <p>با آوند سنتر، هزینه‌ها را هوشمندانه مدیریت کنید.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">پیام</div>
+
+    <script>
+        // ===== مدیریت تم =====
+        const body = document.body;
+        const themeToggle = document.getElementById('themeToggle');
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        const applyTheme = (theme) => {
+            if (theme === 'light') {
+                body.classList.add('light-mode');
+                themeToggle.innerHTML = '☀️';
+            } else {
+                body.classList.remove('light-mode');
+                themeToggle.innerHTML = '🌙';
+            }
+        };
+        applyTheme(savedTheme);
+        themeToggle.addEventListener('click', () => {
+            const isLight = body.classList.contains('light-mode');
+            const newTheme = isLight ? 'dark' : 'light';
+            applyTheme(newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // ===== نمایش / مخفی رمز عبور =====
+        document.querySelectorAll('.toggle-pwd').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const input = btn.parentElement.querySelector('input');
+                const isPassword = input.type === 'password';
+                input.type = isPassword ? 'text' : 'password';
+                btn.textContent = isPassword ? '🙈' : '👁️';
+            });
+        });
+
+        // ===== مدیریت فرم ثبت‌نام و ارسال به بک‌اند =====
+        const signupForm = document.getElementById('signupForm');
+        const submitBtn = document.getElementById('submitBtn');
+
+        signupForm.addEventListener('submit', (e) => {
+            //e.preventDefault(); // جلوگیری موقت برای اعتبارسنجی فرانت‌اند
+
+            const fullName = document.getElementById('fullname').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+
+            // اعتبارسنجی ایمیل ساده
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showToast('لطفاً یک آدرس ایمیل معتبر وارد کنید.', true);
+                return;
+            }
+
+            if (password.length < 8) {
+                showToast('رمز عبور باید حداقل ۸ کاراکتر باشد.', true);
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showToast('رمز عبور و تکرار آن با هم مطابقت ندارند.', true);
+                return;
+            }
+
+            // اگر تمام شروط رعایت شد، انیمیشن دکمه فعال شده و فرم سمت جنگو ارسال می‌شود
+            submitBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> در حال ارسال اطلاعات...';
+            submitBtn.disabled = true;
+
+            // ارسال واقعی درخواست POST به سرور جنگو
+            signupForm.submit();
+        });
+
+        // ===== تابع نمایش پیام Toast =====
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.style.background = isError ? '#f44336' : 'var(--primary)';
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ورود | آوندسنتر</title>
+
+    <!-- Bootstrap 5 RTL -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" />
+    <!-- فونت وزیر -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.0.0/Vazirmatn-font-face.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <style>
+        :root {
+            --bg: #121212;
+            --surface: #1e1e1e;
+            --text: #ffffff;
+            --muted: #a0a0a0;
+            --primary: #ff7a00;
+            --primary-hover: #e06b00;
+            --border: #333;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --input-bg: rgba(128, 128, 128, 0.12);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            --logo-gradient: linear-gradient(135deg, #ffffff 0%, #cccccc 100%);
+            --toggle-bg: #2a2a2a;
+            --toggle-active: rgba(255, 122, 0, 0.2);
+        }
+
+        body.light-mode {
+            --bg: #f5f5f7;
+            --surface: #ffffff;
+            --text: #1d1d1f;
+            --muted: #6e6e73;
+            --primary: #ff7a00;
+            --primary-hover: #e06b00;
+            --border: #e0e0e0;
+            --card-bg: rgba(255, 255, 255, 0.7);
+            --input-bg: rgba(0, 0, 0, 0.05);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --logo-gradient: linear-gradient(135deg, #1d1d1f 0%, #4a4a4f 100%);
+            --toggle-bg: #f0f0f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Vazirmatn', 'Vazir', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            transition: background-color 0.7s ease, color 0.7s ease;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .page-container {
+            width: 30%;
+            padding: -20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* دکمه تم */
+        .theme-toggle {
+            position: fixed;
+            top: 1.5rem;
+            left: 1.5rem;
+            z-index: 100;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            font-size: 1.4rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text);
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            padding-bottom: 4px;
+            padding-right: 2px;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* لوگو */
+        .logo-link {
+            position: fixed;
+            top: 1.7rem;
+            right: 1.7rem;
+            text-decoration: none;
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: var(--logo-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            z-index: 100;
+            transition: opacity 0.3s;
+        }
+
+        .logo-link:hover {
+            opacity: 0.8;
+        }
+
+        /* کارت ورود */
+        .login-card {
+            background: var(--surface);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            width: 100%;
+            max-width: -450px;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .login-card h2 {
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--muted);
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+            line-height: 1.7;
+        }
+
+        /* انتخاب روش ورود */
+        .login-method {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            background: var(--toggle-bg);
+            padding: 5px;
+            border-radius: 12px;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .login-method input[type="radio"] {
+            display: none;
+        }
+
+        .login-method label {
+            display: block;
+            padding: 10px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: var(--muted);
+            transition: all 0.3s;
+            user-select: none;
+        }
+
+        .login-method input[type="radio"]:checked + label {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 2px 10px rgba(255, 122, 0, 0.3);
+        }
+
+        /* فرم */
+        .input-group {
+    margin-bottom: 20px;
+    text-align: right;
+    /* کدهای جدید شما که استایل بوت‌استرپ را بازنویسی می‌کنند: */
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+        .input-group label {
+            display: block;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            color: var(--muted);
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: 10px 14px;
+            margin-right: 7px;
+        padding-left: 30px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .input-wrapper input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.15);
+        }
+
+        .toggle-pwd {
+            position: absolute;
+            left: -7px;
+            background: none;
+            border: none;
+            color: var(--muted);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            transition: color 0.3s;
+            z-index: 2;
+            line-height: 1;
+            width: 40px;
+        }
+
+        .toggle-pwd:hover {
+            color: var(--primary);
+        }
+
+        /* چک باکس و لینک فراموشی */
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+            font-size: 0.85rem;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            color: var(--muted);
+            cursor: pointer;
+        }
+
+        .remember-me input {
+            margin-left: 8px;
+            accent-color: var(--primary);
+        }
+
+        .forgot-password {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        .forgot-password:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        /* دکمه ورود */
+        .btn-submit {
+            width: 100%;
+            padding: 13px;
+            background-color: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.1s;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 122, 0, 0.3);
+        }
+
+        .btn-submit:active {
+            transform: scale(0.98);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.8;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* لینک ثبت‌نام */
+        .signup-link {
+            text-align: center;
+            margin-top: 25px;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .signup-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* مخفی‌سازی فیلدها بر اساس انتخاب */
+        #phoneGroup {
+            display: none;
+        }
+
+        /* واکنش‌گرایی */
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 30px 20px;
+                border-radius: 16px;
+            }
+
+            .theme-toggle,
+            .logo-link {
+                top: 1rem;
+            }
+            .theme-toggle {
+                left: 1rem;
+            }
+            .logo-link {
+                right: 1rem;
+                font-size: 1.4rem;
+            }
+
+            .login-method {
+                width: 100%;
+            }
+            .login-method label {
+                padding: 10px 16px;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- دکمه تغییر تم -->
+    <button class="theme-toggle" id="themeToggle" aria-label="تغییر تم">🌙</button>
+
+    <!-- لینک به صفحه اصلی -->
+    <a href="{% url 'home' %}" class="logo-link">آوندسنتر</a>
+
+    <div class="page-container">
+        <div class="login-card">
+            <h2>خوش آمدید!</h2>
+            <p class="subtitle">لطفاً برای ورود به پنل کاربری، اطلاعات خود را وارد کنید.</p>
+
+            <!-- نمایش خطاهای ورود از سمت جنگو -->
+ُ<!-- نمایش خطاهای جنگو (چه از طریق messages و چه از طریق context) -->
+{% comment %} {% if messages %}
+    <div class="alert alert-danger" role="alert" style="background: #ffebee; color: #c62828; border-radius: 12px; padding: 10px;">
+        {% for message in messages %}
+            <p class="mb-0">{{ message }}</p>
+        {% endfor %}
+    </div>
+{% endif %} {% endcomment %}
+
+{% if form.errors %}
+    <div class="alert alert-danger">
+        {% for field, errors in form.errors.items %}
+            {% for error in errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% if error %}
+    <div class="alert alert-danger" role="alert" style="background: #ffebee; color: #c62828; border-radius: 12px; padding: 15px; margin-bottom: 20px; text-align: right; font-size: 0.95rem; border: 1px solid #ef5350;">
+        {{ error }}
+    </div>
+{% endif %}
+
+<form method="POST" action="{% url 'login' %}" id="loginForm" >
+    {% csrf_token %}
+    <!-- انتخاب روش ورود -->
+    <div class="login-method">
+        <input type="radio" name="loginMethod" id="method-email" value="email" checked>
+        <label for="method-email">ورود با ایمیل</label>
+
+        <input type="radio" name="loginMethod" id="method-phone" value="phone">
+        <label for="method-phone">ورود با شماره همراه</label>
+    </div>
+
+    <!-- فیلد ایمیل -->
+    <div class="input-group" id="emailGroup">
+        <label for="email">پست الکترونیک</label>
+        <div class="input-wrapper">
+            <input
+                type="email"
+                id="email"
+                name="email"  
+                placeholder="example@mail.com"
+                required
+            />
+        </div>
+    </div>
+
+    <!-- فیلد شماره تلفن -->
+    <div class="input-group" id="phoneGroup">
+        <label for="phone">شماره تلفن همراه</label>
+        <div class="input-wrapper">
+            <input
+                type="tel"
+                id="phone"
+                name="phone"  
+                placeholder="09123456789"
+                required
+            />
+        </div>
+    </div>
+
+    <!-- رمز عبور -->
+    <div class="input-group">
+        <label for="password">رمز عبور</label>
+        <div class="input-wrapper">
+            <input
+                type="password"
+                id="password"
+                name="password"  
+                placeholder="********"
+                required
+            />
+            <button type="button" class="toggle-pwd" aria-label="نمایش رمز">
+                👁️
+            </button>
+        </div>
+    </div>
+
+    <!-- چک‌باکس و لینک فراموشی -->
+    <div class="form-actions">
+        <label class="remember-me">
+            <input type="checkbox" id="rememberMe" name="rememberMe" />  <!-- name اضافه شد -->
+            مرا به خاطر بسپار
+        </label>
+        <!-- لینک فراموشی را هم در صورت نیاز به داینامیک تغییر دهید -->
+        <a href="{% url 'forgot_password' %}" class="forgot-password">رمز عبور را فراموش کرده اید؟</a>
+
+    </div>
+
+    <button type="submit" class="btn-submit" id="submitBtn">ورود به حساب</button>
+</form>
+
+
+            <p class="signup-link">
+                حساب کاربری ندارید؟ <a href="{% url 'signup' %}">ثبت‌نام کنید</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // مدیریت تم تیره/روشن
+        const body = document.body;
+        const themeToggle = document.getElementById('themeToggle');
+        const savedTheme = localStorage.getItem('theme');
+        const setThemeIcon = (theme) => {
+            themeToggle.textContent = theme === 'light' ? '☀️' : '🌙';
+        };
+        const applyTheme = (theme) => {
+            if (theme === 'light') {
+                body.classList.add('light-mode');
+                setThemeIcon('light');
+            } else {
+                body.classList.remove('light-mode');
+                setThemeIcon('dark');
+            }
+        };
+        applyTheme(savedTheme === 'light' ? 'light' : 'dark');
+        themeToggle.addEventListener('click', () => {
+            const isLight = body.classList.contains('light-mode');
+            const newTheme = isLight ? 'dark' : 'light';
+            applyTheme(newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // مدیریت نمایش فیلدها بر اساس روش انتخابی
+        const emailRadio = document.getElementById('method-email');
+        const phoneRadio = document.getElementById('method-phone');
+        const emailGroup = document.getElementById('emailGroup');
+        const phoneGroup = document.getElementById('phoneGroup');
+        const emailInput = document.getElementById('email');
+        const phoneInput = document.getElementById('phone');
+        const passwordInput = document.getElementById('password');
+        const submitBtn = document.getElementById('submitBtn');
+        const form = document.getElementById('loginForm');
+
+        function toggleFields() {
+            if (emailRadio.checked) {
+                emailGroup.style.display = 'block';
+                phoneGroup.style.display = 'none';
+                emailInput.required = true;
+                phoneInput.required = false;
+                phoneInput.value = ''; // پاکسازی مقدار قبلی
+            } else {
+                emailGroup.style.display = 'none';
+                phoneGroup.style.display = 'block';
+                phoneInput.required = true;
+                emailInput.required = false;
+                emailInput.value = '';
+            }
+        }
+
+        emailRadio.addEventListener('change', toggleFields);
+        phoneRadio.addEventListener('change', toggleFields);
+        // اجرای اولیه
+        toggleFields();
+
+        // نمایش/مخفی رمز عبور
+        document.querySelectorAll('.toggle-pwd').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const input = btn.parentElement.querySelector('input');
+                const isPassword = input.type === 'password';
+                input.type = isPassword ? 'text' : 'password';
+                btn.textContent = isPassword ? '🙈' : '👁️';
+            });
+        });
+
+        // مدیریت ورود
+       // در صورت تمایل می‌توانید فقط اعتبارسنجی ساده داشته باشید
+
+        // بارگذاری اطلاعات ذخیره شده قبلی
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedIdentifier = localStorage.getItem('userIdentifier') || sessionStorage.getItem('userIdentifier');
+            const savedIdentifierType = localStorage.getItem('identifierType') || sessionStorage.getItem('identifierType');
+            
+            if (savedIdentifier) {
+                if (savedIdentifier.includes('@')) {
+                    // ایمیل است
+                    emailRadio.checked = true;
+                    emailInput.value = savedIdentifier;
+                    toggleFields();
+                } else {
+                    // شماره همراه است
+                    phoneRadio.checked = true;
+                    phoneInput.value = savedIdentifier;
+                    toggleFields();
+                }
+                
+                // اگر نوع ذخیره شده داریم، از آن استفاده کن
+                if (savedIdentifierType === 'ایمیل') {
+                    emailRadio.checked = true;
+                    toggleFields();
+                } else if (savedIdentifierType === 'شماره همراه') {
+                    phoneRadio.checked = true;
+                    toggleFields();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

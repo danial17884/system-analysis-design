@@ -1,0 +1,861 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>پروفایل و امنیت | آوندسنتر</title>
+
+    <!-- Bootstrap 5 RTL -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css">
+    <!-- فونت وزیر -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v18.0.0/dist/font-face.css">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg: #121212;
+            --surface: #1e1e1e;
+            --text: #ffffff;
+            --muted: #a0a0a0;
+            --primary: #ff7a00;
+            --primary-hover: #e06b00;
+            --green: #28a745;
+            --red: #dc3545;
+            --border: #333333;
+            --card-bg: rgba(255,255,255,0.03);
+            --logo-gradient: linear-gradient(135deg, #ffffff 0%, #cccccc 100%);
+            --sidebar-bg: #1a1a1a;
+            --shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        body.light-mode {
+            --bg: #f5f5f7;
+            --surface: #ffffff;
+            --text: #1d1d1f;
+            --muted: #6e6e73;
+            --primary: #ff7a00;
+            --primary-hover: #e06b00;
+            --green: #28a745;
+            --red: #dc3545;
+            --border: #e0e0e0;
+            --card-bg: rgba(0,0,0,0.02);
+            --logo-gradient: linear-gradient(135deg, #1d1d1f 0%, #4a4a4f 100%);
+            --sidebar-bg: #ffffff;
+            --shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+
+        html, body {
+            overflow-x: hidden !important;
+            width: 100%;
+            max-width: 100vw;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Vazir', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            transition: background-color 0.7s ease, color 0.7s ease;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary);
+        }
+
+        .text-orange { color: var(--primary); }
+        .text-green { color: var(--green); }
+        .text-red { color: var(--red); }
+
+        .dashboard-wrapper {
+            display: flex;
+            width: 100%;
+            max-width: 100vw;
+            overflow-x: hidden;
+        }
+
+        .sidebar {
+            width: 260px;
+            background-color: var(--sidebar-bg);
+            border-left: 1px solid var(--border);
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+            z-index: 100;
+        }
+
+        .sidebar-logo {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .sidebar-logo a {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: var(--logo-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            flex-grow: 1;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: var(--text);
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background-color: rgba(255, 122, 0, 0.1);
+            color: var(--primary);
+        }
+
+        .sidebar-menu a.logout:hover {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: var(--red);
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            overflow-x: hidden;
+            background-color: var(--bg);
+            max-width: 100%;
+        }
+
+        .top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .greeting h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .greeting p {
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn-orange {
+            background-color: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+
+        .btn-orange:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,122,0,0.3);
+        }
+
+        .theme-toggle-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.3rem;
+            border-radius: 50%;
+            transition: all 0.3s;
+            background: var(--card-bg);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle-btn:hover {
+            background: rgba(128,128,128,0.2);
+        }
+
+        .theme-toggle-mobile {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 2000;
+            display: none;
+            background: var(--surface);
+            padding: 0.5rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            align-items: center;
+            justify-content: center;
+            color: var(--text);
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-box {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        .box-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .box-header h3 {
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .box-header a {
+            font-size: 0.8rem;
+        }
+
+        .avatar-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: -10px;
+        }
+
+        .avatar-preview {
+            width: -80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+            background: var(--bg);
+            margin-bottom: 2rem;
+            object-fit: cover;
+        }
+
+        .avatar-upload-btn {
+            background: var(--primary);
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: -8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .avatar-upload-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        .avatar-upload-input {
+            display: none;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--muted);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: border 0.3s, box-shadow 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.2);
+        }
+
+        .form-group input:disabled {
+            background: rgba(128,128,128,0.1);
+            cursor: not-allowed;
+            color: var(--muted);
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .toggle-pwd {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--muted);
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.3s;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+        }
+
+        .toggle-pwd:hover {
+            color: var(--primary);
+        }
+
+        .password-wrapper input {
+            padding-left: -45px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.9rem;
+            border: none;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 0.5rem;
+        }
+
+        .primary-btn {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .primary-btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,122,0,0.3);
+        }
+
+        .primary-btn:disabled {
+            background: #555;
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            width: 3rem;
+            height: 3rem;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.4rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 999;
+            box-shadow: 0 4px 15px rgba(255,122,0,0.4);
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .sidebar-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            color: var(--text);
+            cursor: pointer;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--primary);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            z-index: 2000;
+            font-weight: 500;
+            animation: slideIn 0.3s ease;
+            display: none;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(30px); opacity: 0; }
+            to   { transform: translateY(0); opacity: 1; }
+        }
+
+        /* ==== تغییرات اصلی برای موبایل ==== */
+        @media (max-width: 992px) {
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-wrapper {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                right: 0;
+                height: 100vh;
+                transform: translateX(100%);
+                padding-top: 4rem;
+                width: 260px;
+                box-shadow: -5px 0 15px rgba(0,0,0,0.2);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .sidebar-toggle {
+                display: block;
+                position: fixed;
+                top: 1rem;
+                right: 1rem;
+                z-index: 2000;
+                background: var(--surface);
+                padding: 0.5rem;
+                border-radius: 8px;
+                box-shadow: var(--shadow);
+            }
+
+            .theme-toggle-mobile {
+                display: flex;
+            }
+
+            .header-actions .theme-toggle-btn {
+                display: none;
+            }
+
+            .main-content {
+                padding: 1rem;
+                margin-top: 4rem;
+                width: 100%;
+                max-width: 100vw;
+            }
+
+            .top-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .dashboard-box {
+                width: 100%;
+                max-width: 100%;
+                overflow-x: auto;
+            }
+            
+            /* اطمینان از عدم اسکرول افقی کلی صفحه */
+            .main-content {
+                overflow-x: hidden;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="sidebar-toggle" id="sidebarToggle" title="منو">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <button class="theme-toggle-mobile" id="themeToggleMobile" title="تغییر تم"></button>
+
+    <div class="dashboard-wrapper">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-logo">
+                <a href="index.html">آوندسنتر</a>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="{% url 'dashboard' %}"><i class="fas fa-home"></i> داشبورد</a></li>
+                <li><a href="{% url 'transactions' %}"><i class="fas fa-list"></i> تراکنش‌ها</a></li>
+                <li><a href="{% url 'statistics' %}"><i class="fas fa-chart-pie"></i> آمار و گزارش‌ها</a></li>
+                <li><a href="{% url 'profile' %}" class="active"><i class="fas fa-user-cog"></i> پروفایل و امنیت</a></li>
+                <li><a href="{% url 'logout' %}" class="logout" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> خروج</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            
+    <!-- نمایش پیام‌های Django Messages -->
+    {% if messages %}
+        <div class="container-fluid mb-3">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert" style="border-radius: 12px;">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    
+        ...
+
+            <header class="top-header">
+                <div class="greeting">
+                    <h2>پروفایل و امنیت <i class="fas fa-user-shield"></i></h2>
+                    <p>مدیریت اطلاعات شخصی و تنظیمات امنیتی حساب کاربری</p>
+                </div>
+                <div class="header-actions">
+                    <button class="theme-toggle-btn" id="themeToggleDesktop" title="تغییر تم"></button>
+                </div>
+            </header>
+
+            <section class="profile-grid">
+                <!-- کارت اطلاعات کاربری -->
+                <div class="dashboard-box">
+                    <div class="box-header">
+                        <h3><i class="fas fa-user-circle"></i> اطلاعات کاربری</h3>
+                    </div>
+                    <div class="avatar-section">
+                        <img
+                            id="avatarPreview"
+                            class="avatar-preview"
+                            src="https://via.placeholder.com/80x80?text=Avatar"
+                            alt="آواتار کاربر"
+                        />
+                        <div>
+                            <label for="avatarInput" class="avatar-upload-btn">
+                                <i class="fas fa-camera"></i> تغییر آواتار
+                            </label>
+                            <input type="file" id="avatarInput" class="avatar-upload-input" accept="image/*" />
+                        </div>
+                    </div>
+
+                    <form id="profileForm" method="POST">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="first_name">نام و نام خانوادگی</label>
+                            <input type="text" id="first_name" name="first_name" value="{{ user.first_name }} {{ user.last_name }}" />
+                        </div>
+                        <div class="form-group">
+                            <label for="email">ایمیل</label>
+                            <input type="email" id="email"  name="email" value="{{ user.email }}" />
+                        </div>
+                        <div class="form-group">
+                            <label for="joinDate">تاریخ عضویت</label>
+                            <input type="text" id="joinDate" value="{{ user.date_joined|date:'Y/m/d' }}" disabled />
+                        </div>
+                        <button type="submit" class="btn primary-btn"  name="update_profile" id="profileSubmit">
+                            ذخیره تغییرات
+                        </button>
+                    </form>
+                </div>
+
+                <!-- کارت تغییر رمز عبور -->
+                <div class="dashboard-box">
+                    <div class="box-header">
+                        <h3><i class="fas fa-lock"></i> تغییر رمز عبور</h3>
+                    </div>
+                    <form id="passwordForm" method="POST">
+                         {% csrf_token %}
+                          
+                          <!-- بخش نمایش خطاهای فرم تغییر رمز عبور -->
+    {% if password_form.errors %}
+        <div style="color: red; margin-bottom: 15px; font-size: 0.9em;">
+            {% for field in password_form %}
+                {% for error in field.errors %}
+                    <p>• {{ error }}</p>
+                {% endfor %}
+            {% endfor %}
+            {% for error in password_form.non_field_errors %}
+                <p>• {{ error }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+                        <div class="form-group">
+                            <label for="currentPassword">رمز عبور فعلی</label>
+                            <div class="password-wrapper">
+                                <input type="password" id="currentPassword" name="old_password" placeholder="رمز عبور فعلی خود را وارد کنید" />
+                                <button type="button" class="toggle-pwd" aria-label="نمایش رمز">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword">رمز عبور جدید</label>
+                            <div class="password-wrapper">
+                                <input type="password" id="newPassword" name="new_password1" placeholder="حداقل ۸ کاراکتر" />
+                                <button type="button" class="toggle-pwd" aria-label="نمایش رمز">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">تکرار رمز عبور جدید</label>
+                            <div class="password-wrapper">
+                                <input type="password" id="confirmPassword" name="new_password2" placeholder="رمز عبور جدید را تکرار کنید" />
+                                <button type="button" class="toggle-pwd" aria-label="نمایش رمز">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn primary-btn" id="passwordSubmit" name="change_password">
+                            تغییر رمز عبور
+                        </button>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <button class="back-to-top" id="backToTop" title="بازگشت به بالا">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <div class="toast" id="toast">پیام</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // ==================== متغیرها و توابع مشترک ====================
+        const body = document.body;
+        const themeToggleDesktop = document.getElementById('themeToggleDesktop');
+        const themeToggleMobile = document.getElementById('themeToggleMobile');
+        const savedTheme = localStorage.getItem('theme');
+
+        // ==================== تم ====================
+        function setThemeIcons(theme) {
+            const icon = theme === 'light' ? '☀️' : '🌙';
+            if (themeToggleDesktop) themeToggleDesktop.innerHTML = icon;
+            if (themeToggleMobile) themeToggleMobile.innerHTML = icon;
+        }
+
+        function applyTheme(theme) {
+            if (theme === 'light') {
+                body.classList.add('light-mode');
+                setThemeIcons('light');
+            } else {
+                body.classList.remove('light-mode');
+                setThemeIcons('dark');
+            }
+        }
+
+        function toggleTheme() {
+            const isLight = body.classList.contains('light-mode');
+            const newTheme = isLight ? 'dark' : 'light';
+            applyTheme(newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+
+        applyTheme(savedTheme === 'light' ? 'light' : 'dark');
+
+        if (themeToggleDesktop) themeToggleDesktop.addEventListener('click', toggleTheme);
+        if (themeToggleMobile) themeToggleMobile.addEventListener('click', toggleTheme);
+
+        // ==================== خروج ====================
+        document.getElementById('logoutBtn')?.addEventListener('click', (e) => {
+         //   e.preventDefault();
+            if (confirm('آیا مطمئن هستید که می‌خواهید از حساب کاربری خارج شوید؟')) {
+               // localStorage.removeItem('authToken');
+               // sessionStorage.removeItem('authToken');
+               // localStorage.removeItem('theme');
+                window.location.href = '"{% url 'logout' %}"';
+            }
+        });
+
+        // ==================== سایدبار موبایل ====================
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.getElementById('sidebar');
+        if (sidebarToggle && sidebar) {
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('open');
+                const icon = sidebarToggle.querySelector('i');
+                icon.classList.toggle('fa-bars');
+                icon.classList.toggle('fa-times');
+            });
+            sidebar.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth <= 768) {
+                        sidebar.classList.remove('open');
+                        const icon = sidebarToggle.querySelector('i');
+                        icon.classList.add('fa-bars');
+                        icon.classList.remove('fa-times');
+                    }
+                });
+            });
+        }
+
+        // ==================== دکمه بازگشت به بالا ====================
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            backToTop.classList.toggle('show', window.scrollY > 400);
+        });
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // ==================== نمایش / مخفی‌سازی رمز عبور ====================
+        document.querySelectorAll('.toggle-pwd').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const input = btn.parentElement.querySelector('input');
+                const icon = btn.querySelector('i');
+                const isPassword = input.type === 'password';
+                input.type = isPassword ? 'text' : 'password';
+                icon.classList.toggle('fa-eye');
+                icon.classList.toggle('fa-eye-slash');
+            });
+        });
+
+        // ==================== پیش‌نمایش آواتار و فعال‌سازی دکمه ذخیره ====================
+        const avatarInput = document.getElementById('avatarInput');
+        const avatarPreview = document.getElementById('avatarPreview');
+        const profileSubmit = document.getElementById('profileSubmit');
+
+        avatarInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    avatarPreview.src = e.target.result;
+                    profileSubmit.disabled = false;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // ==================== فرم اطلاعات کاربری ====================
+        const profileForm = document.getElementById('profileForm');
+        profileForm.addEventListener('submit', (e) => {
+            //e.preventDefault();
+            profileSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال ذخیره...';
+           // profileSubmit.disabled = true;
+
+            setTimeout(() => {
+                showToast('اطلاعات و آواتار با موفقیت ذخیره شد.');
+                profileSubmit.innerHTML = 'ذخیره تغییرات';
+                //profileSubmit.disabled = true;
+            },1320);
+        });
+
+        // ==================== فرم تغییر رمز عبور ====================
+        const passwordForm = document.getElementById('passwordForm');
+        const passwordSubmit = document.getElementById('passwordSubmit');
+        passwordForm.addEventListener('submit', (e) => {
+          //  e.preventDefault();
+            const currentPass = document.getElementById('currentPassword').value;
+            const newPass = document.getElementById('newPassword').value;
+            const confirmPass = document.getElementById('confirmPassword').value;
+
+            if (!currentPass || !newPass || !confirmPass) {
+                showToast('لطفاً تمام فیلدها را پر کنید.', true);
+                return;
+            }
+            if (newPass !== confirmPass) {
+                showToast('رمز عبور جدید و تکرار آن یکسان نیست.', true);
+                return;
+            }
+            if (newPass.length < 8) {
+                showToast('رمز عبور جدید باید حداقل ۸ کاراکتر باشد.', true);
+                return;
+            }
+
+            passwordSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال تغییر...';
+            //passwordSubmit.disabled = true;
+
+            setTimeout(() => {
+                showToast('رمز عبور با موفقیت تغییر کرد.');
+                passwordForm.reset();
+                passwordSubmit.innerHTML = 'تغییر رمز عبور';
+                passwordSubmit.disabled = false;
+            }, 1500);
+        });
+
+        // ==================== تابع Toast ====================
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.style.background = isError ? '#dc3545' : 'var(--primary)';
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
